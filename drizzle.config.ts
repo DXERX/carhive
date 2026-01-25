@@ -8,8 +8,15 @@ export default defineConfig({
   out: "./db/migrations",
   dialect: "postgresql",
   dbCredentials: {
-    url: process.env.POSTGRES_URL!,
+    url: process.env.POSTGRES_URL || process.env.DATABASE_URL || "",
   },
   verbose: true,
   strict: true,
+  extensionsFilters: ["postgis"],
+  schemaFilter: "public",
+  tablesFilter: "*",
+  introspect: {
+    casing: "preserve",
+  },
+  tsconfig: "./tsconfig.json",
 })

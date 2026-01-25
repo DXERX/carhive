@@ -9,12 +9,12 @@ import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
+    default: "Avis - Istanbul Airport Car Rental",
+    template: `%s - Avis Istanbul Airport`,
   },
-  description: siteConfig.description,
+  description: "Reliable car rental service from Istanbul Airport. No credit card required.",
   authors: {
     name: siteConfig.author.name,
     url: siteConfig.author.url,
@@ -24,42 +24,26 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteConfig.url,
-    title: siteConfig.name,
-    description: siteConfig.description,
-    siteName: siteConfig.name,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: siteConfig.name,
-    description: siteConfig.description,
-    creator: `@${siteConfig.author.name}`,
+    title: "Avis - Istanbul Airport Car Rental",
+    description: "Reliable car rental service from Istanbul Airport",
+    siteName: "Avis Istanbul Airport",
   },
   icons: {
-    icon: [
-      {
-        url: "/favicon.ico",
-        sizes: "32x32",
-      },
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
-      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
-    ],
-    apple: [{ url: "/apple-icon.png", type: "image/png" }],
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
   },
+  manifest: `${siteConfig.url}/manifest.webmanifest`,
 }
 
 export const viewport: Viewport = {
-  themeColor: "white",
-  colorScheme: "light",
-  width: "device-width",
-  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
 }
 
-interface RootLayoutProps {
-  children: React.ReactNode
-}
-
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider>
       <html lang="en" className={fontSans.variable}>

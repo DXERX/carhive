@@ -8,7 +8,15 @@ export default function SignUpPage() {
       <div className="absolute inset-0 flex h-dvh w-dvw items-center justify-center">
         <LoadingDots />
       </div>
-      <SignUp />
+      <SignUp 
+        appearance={{
+          elements: {
+            formFieldInput__phoneNumber: "hidden",
+            formFieldInputShowPasswordButton: "hidden",
+          },
+        }}
+        signInUrl="/sign-in"
+      />
     </div>
   )
 }

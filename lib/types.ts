@@ -11,4 +11,9 @@ export enum SearchParams {
   POWERTRAIN = "powertrain",
   MIN_SEATS = "min-seats",
   TRANSMISSION = "transmission",
+  SERVICE_TYPE = "service-type", // self-drive or chauffeur
+  LUXURY_CLASS = "luxury-class", // standard, premium, luxury, executive
 }
+
+export type ServiceType = "self-drive" | "chauffeur"
+export type LuxuryClass = "standard" | "premium" | "luxury" | "executive"

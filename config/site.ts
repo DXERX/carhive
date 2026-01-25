@@ -1,14 +1,28 @@
 export const siteConfig = {
-  name: "Carhive",
+  name: "CarHive - Premium Luxury Car Rental",
   url: "https://carhive.eduam.dev",
   author: {
     name: "eduamdev",
     url: "https://eduam.dev",
   },
   description:
-    "Explore the freedom of the open road with our premium car rental services! Discover a wide range of meticulously maintained vehicles, from sleek sedans to spacious SUVs, perfect for every occasion. With competitive prices, flexible rental options, and exceptional customer service, we make your journey unforgettable. Book your dream car today and embark on a seamless travel experience.",
+    "Experience luxury and comfort with our premium VIP car rental services. Professional chauffeur-driven vehicles and self-drive luxury cars available 24/7 across Istanbul and Turkey. Specializing in Mercedes and premium vehicles with over 15 years of experience in luxury transportation.",
+  features: [
+    "Chauffeur-driven luxury vehicles",
+    "Self-drive premium cars",
+    "VIP airport transfers",
+    "24/7 availability",
+    "Professional service",
+    "Long-term rentals",
+  ],
+  serviceAreas: ["Istanbul", "Ankara", "Izmir", "Antalya", "Turkey-wide"],
   links: {
     github: "https://github.com/eduamdev",
+  },
+  contact: {
+    phone: "+90 XXX XXX XX XX",
+    email: "info@carhive.com",
+    whatsapp: "+90 XXX XXX XX XX",
   },
 }
 

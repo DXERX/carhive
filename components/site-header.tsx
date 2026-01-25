@@ -5,9 +5,10 @@ export function SiteHeader() {
   return (
     <header className="flex h-full items-center justify-between">
       <LogoLink />
-      <div className="inline-flex">
+      <div className="inline-flex items-center gap-2">
         <UserMenuButton />
       </div>
     </header>
   )
 }
+
