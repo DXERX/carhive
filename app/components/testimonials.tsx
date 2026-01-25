@@ -53,6 +53,9 @@ export function Testimonials() {
                             <Image
                               src={imageUrl}
                               alt={name}
+                              width={24}
+                              height={24}
+                              loading="lazy"
                               className="size-6 shrink-0 rounded-full object-cover"
                             />
                             <p className="text-[13px] font-medium text-neutral-700 xl:text-[14px]">

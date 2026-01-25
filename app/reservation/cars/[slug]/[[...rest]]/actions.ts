@@ -19,7 +19,14 @@ interface CreateBookingInput {
   notes?: string
 }
 
-export async function createBookingAction(data: CreateBookingInput) {
+interface BookingActionResult {
+  success: boolean
+  bookingId?: number
+  message?: string
+  error?: string
+}
+
+export async function createBookingAction(data: CreateBookingInput): Promise<BookingActionResult> {
   try {
     // Get authenticated user (optional - supports guest bookings)
     const { userId } = await auth()

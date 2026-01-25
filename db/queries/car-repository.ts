@@ -1,10 +1,12 @@
+import { cache } from "react"
 import { eq } from "drizzle-orm"
 
 import { db } from ".."
 import { SelectCar } from "../schema"
 import { cars as fallbackCars } from "@/data/cars"
 
-export async function getCars() {
+// Cache getCars query results for the duration of the request
+export const getCars = cache(async () => {
   if (!db) {
     console.log('Database not available, using fallback cars data')
     return fallbackCars
@@ -15,9 +17,10 @@ export async function getCars() {
     console.warn('Database query failed, using fallback cars data:', error)
     return fallbackCars
   }
-}
+})
 
-export async function getCarBySlug(slug: SelectCar["slug"]) {
+// Cache getCarBySlug query results for the duration of the request
+export const getCarBySlug = cache(async (slug: SelectCar["slug"]) => {
   if (!db) {
     console.log('Database not available, using fallback cars data')
     return fallbackCars.find(car => car.slug === slug) || null
@@ -30,4 +33,4 @@ export async function getCarBySlug(slug: SelectCar["slug"]) {
     console.warn('Database query failed, using fallback cars data:', error)
     return fallbackCars.find(car => car.slug === slug) || null
   }
-}
+})

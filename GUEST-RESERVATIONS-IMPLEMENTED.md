@@ -63,7 +63,15 @@ const hasDuplicate = await checkDuplicateBooking(
 3. No authentication required - `userId` will be `null`
 4. System checks for duplicate bookings using email instead of userId
 5. Booking is created with `userId = null`
-6. Guest receives confirmation via email
+6. **Guest redirected to success page** at `/reservation/confirmation/success`
+7. Success page shows:
+   - Confirmation message
+   - Next steps information
+   - Email notification notice
+   - Support contact details
+   - Buttons to return home or browse more cars
+   - 10-second countdown timer
+8. After 10 seconds, auto-redirects to homepage
 
 ### Authenticated User Booking Flow:
 1. Signed-in user navigates to car details
@@ -71,7 +79,7 @@ const hasDuplicate = await checkDuplicateBooking(
 3. System gets userId from Clerk authentication
 4. Checks for duplicates using userId
 5. Booking is created with userId attached
-6. User can view bookings in their account
+6. **User redirected to `/bookings`** to view their reservations
 
 ## Duplicate Prevention
 
@@ -111,9 +119,13 @@ const hasDuplicate = await checkDuplicateBooking(
 ## Files Modified
 
 1. `/db/schema.ts` - Made userId nullable
-2. `/db/migrations/0004_make_userid_nullable.sql` - Database migration
-3. `/db/queries/booking-repository.ts` - Updated duplicate check, added getBookingsByEmail
-4. `/app/reservation/cars/[slug]/[[...rest]]/actions.ts` - Removed auth requirement
+2. `/db/migrations/0004_make_userid_nullable.sql` - Database migration (manual SQL)
+3. `/db/fix-userid-nullable.ts` - **FIX SCRIPT** - Applied migration to database
+4. `/db/queries/booking-repository.ts` - Updated duplicate check, added getBookingsByEmail
+5. `/app/reservation/cars/[slug]/[[...rest]]/actions.ts` - Removed auth requirement
+6. `/app/reservation/cars/[slug]/[[...rest]]/components/contact-form.tsx` - **UPDATED** - Smart redirect logic
+7. `/app/reservation/confirmation/success/page.tsx` - **NEW** - Success page server component
+8. `/app/reservation/confirmation/success/success-page-client.tsx` - **NEW** - Success page with countdown
 
 ## Database Impact
 
@@ -128,6 +140,15 @@ user_id TEXT NULL  -- Optional for guest bookings
 ```
 
 All existing bookings retain their userId values. New guest bookings will have `userId = NULL`.
+
+### Migration Applied
+The database schema has been successfully updated:
+```bash
+✅ Successfully made user_id nullable
+Guest reservations are now enabled!
+```
+
+**Migration Script**: `/db/fix-userid-nullable.ts` (one-time fix script executed successfully)
 
 ## Security Considerations
 

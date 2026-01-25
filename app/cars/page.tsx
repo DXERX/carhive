@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   title: "Cars - Istanbul Airport Rental",
 }
 
+// Enable revalidation for better caching
+export const revalidate = 1800 // Revalidate every 30 minutes
+
 export default async function CarsPage({
   searchParams,
 }: {

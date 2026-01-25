@@ -1,12 +1,31 @@
+import dynamic from "next/dynamic"
 import { SiteHeader } from "@/components/site-header"
-
-import { BrowseCarTypes } from "./components/browse-car-types"
-import { CallToAction } from "./components/call-to-action"
-import { Features } from "./components/features"
 import { Hero } from "./components/hero"
-import { PopularDestinations } from "./components/popular-destinations"
-import { Testimonials } from "./components/testimonials"
 import { VipServices } from "./components/vip-services"
+
+// Lazy load below-the-fold components for better initial page load
+const BrowseCarTypes = dynamic(() => import("./components/browse-car-types").then(mod => ({ default: mod.BrowseCarTypes })), {
+  loading: () => <div className="h-96 animate-pulse bg-gray-100" />,
+})
+
+const PopularDestinations = dynamic(() => import("./components/popular-destinations").then(mod => ({ default: mod.PopularDestinations })), {
+  loading: () => <div className="h-96 animate-pulse bg-gray-100" />,
+})
+
+const Features = dynamic(() => import("./components/features").then(mod => ({ default: mod.Features })), {
+  loading: () => <div className="h-64 animate-pulse bg-gray-100" />,
+})
+
+const Testimonials = dynamic(() => import("./components/testimonials").then(mod => ({ default: mod.Testimonials })), {
+  loading: () => <div className="h-96 animate-pulse bg-gray-100" />,
+})
+
+const CallToAction = dynamic(() => import("./components/call-to-action").then(mod => ({ default: mod.CallToAction })), {
+  loading: () => <div className="h-48 animate-pulse bg-gray-100" />,
+})
+
+// Enable static generation with revalidation for better caching
+export const revalidate = 3600 // Revalidate every hour
 
 export default function HomePage() {
   return (

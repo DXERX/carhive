@@ -57,8 +57,8 @@ export function PopularDestinations() {
                     <Image
                       src={imageUrl}
                       alt={name}
-                      quality={85}
-                      priority
+                      quality={75}
+                      loading="lazy"
                       fill
                       sizes="(max-width: 550px) 50vw, (max-width: 950px) 33.33vw, 20vw"
                       className="rounded-xl object-cover transition-opacity group-hover:opacity-70"

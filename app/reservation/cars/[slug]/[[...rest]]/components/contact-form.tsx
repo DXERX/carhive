@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -32,6 +33,7 @@ export function ContactForm({
 }: ContactFormProps) {
   const { toast } = useToast()
   const router = useRouter()
+  const { isSignedIn } = useAuth()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
     fullName: "",
@@ -60,14 +62,35 @@ export function ContactForm({
         notes: formData.notes,
       })
 
+      // Check if result exists and has the expected structure
+      if (!result) {
+        toast({
+          title: "Error",
+          description: "Failed to create booking. Please try again.",
+          variant: "destructive",
+        })
+        return
+      }
+
       if (result.success) {
         toast({
           title: "Reservation Request Sent! ✅",
           description: result.message || "We will contact you shortly to confirm your booking.",
         })
-        // Redirect to bookings page after 1 second
+        
+        // Redirect based on authentication status
         setTimeout(() => {
-          router.push("/bookings")
+          if (isSignedIn) {
+            // Authenticated users go to their bookings page
+            router.push("/bookings")
+          } else {
+            // Guest users go to success page with details
+            const params = new URLSearchParams({
+              email: formData.email,
+              carName: carName,
+            })
+            router.push(`/reservation/confirmation/success?${params.toString()}`)
+          }
         }, 1000)
       } else {
         toast({
@@ -77,6 +100,7 @@ export function ContactForm({
         })
       }
     } catch (error) {
+      console.error("Booking error:", error)
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
