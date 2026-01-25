@@ -1,11 +1,8 @@
-import { Suspense } from "react"
-
-import { SearchPanelWrapper } from "@/components/search-panel-wrapper"
-import { SearchPanelSkeleton } from "@/components/skeletons/search-panel"
+import { SearchPanelClient } from "@/components/search-panel-client"
 
 import { LogoSlider } from "./logo-slider"
 
-export async function Hero() {
+export function Hero() {
   return (
     <section className="bg-gradient-to-b from-white to-neutral-50">
       <div className="mx-auto w-full max-w-none px-5 sm:max-w-[90%] sm:px-0 2xl:max-w-8xl">
@@ -17,9 +14,7 @@ export async function Hero() {
             <div className="pt-10">
               <div className="flex items-center justify-center">
                 <div className="w-[860px]">
-                  <Suspense fallback={<SearchPanelSkeleton />}>
-                    <SearchPanelWrapper />
-                  </Suspense>
+                  <SearchPanelClient />
                 </div>
               </div>
             </div>
