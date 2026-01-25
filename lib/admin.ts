@@ -1,5 +1,8 @@
 import { auth, currentUser } from "@clerk/nextjs/server"
-import { isAdminByEmail } from "@/db/queries/admin-repository"
+import { isAdminByEmail as isAdminByEmailDB } from "@/db/queries/admin-repository"
+
+// Re-export for convenience in server actions
+export { isAdminByEmailDB as isAdminByEmail }
 
 /**
  * Check if the current user is an admin
@@ -19,7 +22,7 @@ export async function checkIsAdmin(): Promise<boolean> {
   }
 
   // Check database first
-  const isAdminDB = await isAdminByEmail(userEmail)
+  const isAdminDB = await isAdminByEmailDB(userEmail)
   if (isAdminDB) {
     return true
   }
