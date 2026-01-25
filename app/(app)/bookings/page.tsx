@@ -40,7 +40,7 @@ export default async function BookingsPage() {
         </div>
 
         {bookings.length === 0 ? (
-          <div className="rounded-lg border bg-card p-8 text-center">
+          <div className="bg-card rounded-lg border p-8 text-center">
             <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-neutral-100">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +59,7 @@ export default async function BookingsPage() {
               </svg>
             </div>
             <h3 className="mb-2 text-lg font-semibold">No bookings yet</h3>
-            <p className="mb-6 text-muted-foreground">
+            <p className="text-muted-foreground mb-6">
               Start browsing our collection of luxury vehicles
             </p>
             <a
@@ -74,12 +74,12 @@ export default async function BookingsPage() {
             {bookings.map((booking) => (
               <div
                 key={booking.id}
-                className="rounded-lg border bg-card p-6 hover:shadow-md transition-shadow"
+                className="bg-card rounded-lg border p-6 transition-shadow hover:shadow-md"
               >
-                <div className="flex flex-col md:flex-row gap-6">
+                <div className="flex flex-col gap-6 md:flex-row">
                   {/* Car Image */}
                   {booking.carImageUrl && (
-                    <div className="relative w-full md:w-48 h-32 rounded-lg overflow-hidden flex-shrink-0">
+                    <div className="relative h-32 w-full shrink-0 overflow-hidden rounded-lg md:w-48">
                       <CldImage
                         src={booking.carImageUrl}
                         alt={booking.carName}
@@ -92,12 +92,12 @@ export default async function BookingsPage() {
 
                   {/* Booking Details */}
                   <div className="flex-1">
-                    <div className="flex items-start justify-between mb-4">
+                    <div className="mb-4 flex items-start justify-between">
                       <div>
-                        <h3 className="text-xl font-semibold mb-1">
+                        <h3 className="mb-1 text-xl font-semibold">
                           {booking.carName}
                         </h3>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-muted-foreground text-sm">
                           Booking ID: #{booking.id}
                         </p>
                       </div>
@@ -107,40 +107,40 @@ export default async function BookingsPage() {
                       </Badge>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
                       <div>
-                        <p className="text-sm text-muted-foreground">Pickup</p>
+                        <p className="text-muted-foreground text-sm">Pickup</p>
                         <p className="font-medium">
                           {format(new Date(booking.checkinDate), "MMM dd, yyyy")}
                         </p>
-                        <p className="text-sm text-muted-foreground mt-1">
+                        <p className="text-muted-foreground mt-1 text-sm">
                           {booking.pickupLocation}
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-muted-foreground">Return</p>
+                        <p className="text-muted-foreground text-sm">Return</p>
                         <p className="font-medium">
                           {format(new Date(booking.checkoutDate), "MMM dd, yyyy")}
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-4 border-t">
+                    <div className="flex items-center justify-between border-t pt-4">
                       <div>
-                        <p className="text-sm text-muted-foreground">Total Price</p>
+                        <p className="text-muted-foreground text-sm">Total Price</p>
                         <p className="text-2xl font-bold">
                           ${Number(booking.totalPrice).toFixed(2)}
                         </p>
                       </div>
-                      <div className="text-sm text-muted-foreground">
+                      <div className="text-muted-foreground text-sm">
                         <p>Booked on {format(new Date(booking.createdAt), "MMM dd, yyyy")}</p>
                       </div>
                     </div>
 
                     {booking.notes && (
-                      <div className="mt-4 pt-4 border-t">
-                        <p className="text-sm text-muted-foreground">Notes:</p>
-                        <p className="text-sm mt-1">{booking.notes}</p>
+                      <div className="mt-4 border-t pt-4">
+                        <p className="text-muted-foreground text-sm">Notes:</p>
+                        <p className="mt-1 text-sm">{booking.notes}</p>
                       </div>
                     )}
                   </div>

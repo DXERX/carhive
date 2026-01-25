@@ -51,7 +51,7 @@ export function UpdateBookingStatus({ bookingId, currentStatus }: UpdateBookingS
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button 
-          className={`${getStatusColor(currentStatus)} cursor-pointer inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none`}
+          className={`${getStatusColor(currentStatus)} focus:ring-ring inline-flex cursor-pointer items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50`}
           disabled={isUpdating}
         >
           {isUpdating ? "Updating..." : currentStatus.charAt(0).toUpperCase() + currentStatus.slice(1)}
@@ -60,25 +60,25 @@ export function UpdateBookingStatus({ bookingId, currentStatus }: UpdateBookingS
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => handleStatusChange("pending")}>
           <span className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
+            <span className="size-2 rounded-full bg-yellow-500"></span>
             Pending
           </span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleStatusChange("confirmed")}>
           <span className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-green-500"></span>
+            <span className="size-2 rounded-full bg-green-500"></span>
             Confirmed
           </span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleStatusChange("completed")}>
           <span className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+            <span className="size-2 rounded-full bg-blue-500"></span>
             Completed
           </span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => handleStatusChange("cancelled")}>
           <span className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-red-500"></span>
+            <span className="size-2 rounded-full bg-red-500"></span>
             Cancelled
           </span>
         </DropdownMenuItem>

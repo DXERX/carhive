@@ -33,8 +33,8 @@ export default async function AdminLocationsPage() {
   const inactiveLocations = locations.filter((l: any) => l.status === 'inactive').length
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="flex items-center justify-between mb-8">
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Locations Management</h1>
           <p className="text-muted-foreground mt-2">
@@ -43,14 +43,14 @@ export default async function AdminLocationsPage() {
         </div>
         <AddLocationDialog>
           <Button>
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="mr-2 size-4" />
             Add Location
           </Button>
         </AddLocationDialog>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-3">
             <CardDescription>Total Locations</CardDescription>
@@ -79,8 +79,8 @@ export default async function AdminLocationsPage() {
         </CardHeader>
         <CardContent>
           {locations.length === 0 ? (
-            <div className="text-center py-12">
-              <MapPin className="h-12 w-12 mx-auto mb-3 opacity-30" />
+            <div className="py-12 text-center">
+              <MapPin className="mx-auto mb-3 size-12 opacity-30" />
               <p className="text-muted-foreground">No locations found</p>
             </div>
           ) : (

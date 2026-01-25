@@ -19,11 +19,11 @@ export default async function ProfilePage() {
           </p>
         </div>
 
-        <div className="rounded-lg border bg-card p-6">
+        <div className="bg-card rounded-lg border p-6">
           <h2 className="mb-4 text-xl font-semibold">Account Information</h2>
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-muted-foreground">
+              <label className="text-muted-foreground text-sm font-medium">
                 Full Name
               </label>
               <p className="mt-1 text-base">
@@ -31,7 +31,7 @@ export default async function ProfilePage() {
               </p>
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">
+              <label className="text-muted-foreground text-sm font-medium">
                 Email
               </label>
               <p className="mt-1 text-base">
@@ -39,7 +39,7 @@ export default async function ProfilePage() {
               </p>
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">
+              <label className="text-muted-foreground text-sm font-medium">
                 Member Since
               </label>
               <p className="mt-1 text-base">
@@ -49,7 +49,7 @@ export default async function ProfilePage() {
           </div>
         </div>
 
-        <div className="rounded-lg border bg-card p-6">
+        <div className="bg-card rounded-lg border p-6">
           <h2 className="mb-4 text-xl font-semibold">Quick Actions</h2>
           <div className="flex flex-wrap gap-4">
             <a

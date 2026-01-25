@@ -70,7 +70,7 @@ export type SelectCar = typeof carsTable.$inferSelect
 
 export const bookingsTable = pgTable("bookings", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
-  userId: text("user_id").notNull(), // Clerk user ID
+  userId: text("user_id"), // Clerk user ID - nullable for guest bookings
   carId: integer("car_id").notNull().references(() => carsTable.id),
   carName: text("car_name").notNull(),
   carImageUrl: text("car_image_url"),

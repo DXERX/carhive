@@ -7,7 +7,7 @@ import CldImage from "@/components/cld-image"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { UpdateBookingStatus } from "./components/update-booking-status"
+import { UpdateBookingStatus } from "../components/update-booking-status"
 
 export const metadata = {
   title: "Admin Dashboard - CarHive",
@@ -83,21 +83,21 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card className="p-6">
-            <div className="text-sm text-muted-foreground mb-1">Total Bookings</div>
+            <div className="text-muted-foreground mb-1 text-sm">Total Bookings</div>
             <div className="text-3xl font-bold">{totalBookings}</div>
           </Card>
           <Card className="p-6">
-            <div className="text-sm text-muted-foreground mb-1">Pending</div>
+            <div className="text-muted-foreground mb-1 text-sm">Pending</div>
             <div className="text-3xl font-bold text-yellow-600">{pendingBookings}</div>
           </Card>
           <Card className="p-6">
-            <div className="text-sm text-muted-foreground mb-1">Confirmed</div>
+            <div className="text-muted-foreground mb-1 text-sm">Confirmed</div>
             <div className="text-3xl font-bold text-green-600">{confirmedBookings}</div>
           </Card>
           <Card className="p-6">
-            <div className="text-sm text-muted-foreground mb-1">Total Revenue</div>
+            <div className="text-muted-foreground mb-1 text-sm">Total Revenue</div>
             <div className="text-3xl font-bold">${totalRevenue.toFixed(2)}</div>
           </Card>
         </div>
@@ -105,12 +105,12 @@ export default async function AdminDashboardPage() {
         {/* Bookings by Country */}
         {Object.keys(bookingsByCountry).length > 0 && (
           <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Bookings by Location</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <h3 className="mb-4 text-lg font-semibold">Bookings by Location</h3>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               {Object.entries(bookingsByCountry).map(([country, count]) => (
-                <div key={country} className="text-center p-3 bg-neutral-50 rounded-lg">
+                <div key={country} className="rounded-lg bg-neutral-50 p-3 text-center">
                   <div className="text-2xl font-bold">{count}</div>
-                  <div className="text-sm text-muted-foreground">{country}</div>
+                  <div className="text-muted-foreground text-sm">{country}</div>
                 </div>
               ))}
             </div>
@@ -119,7 +119,7 @@ export default async function AdminDashboardPage() {
 
         {/* All Bookings */}
         <div>
-          <h2 className="text-2xl font-bold mb-4">All Bookings</h2>
+          <h2 className="mb-4 text-2xl font-bold">All Bookings</h2>
           {bookings.length === 0 ? (
             <Card className="p-8 text-center">
               <p className="text-muted-foreground">No bookings yet</p>
@@ -128,10 +128,10 @@ export default async function AdminDashboardPage() {
             <div className="space-y-4">
               {bookings.map((booking) => (
                 <Card key={booking.id} className="p-6">
-                  <div className="flex flex-col lg:flex-row gap-6">
+                  <div className="flex flex-col gap-6 lg:flex-row">
                     {/* Car Image */}
                     {booking.carImageUrl && (
-                      <div className="relative w-full lg:w-48 h-32 rounded-lg overflow-hidden flex-shrink-0">
+                      <div className="relative h-32 w-full shrink-0 overflow-hidden rounded-lg lg:w-48">
                         <CldImage
                           src={booking.carImageUrl}
                           alt={booking.carName}
@@ -144,63 +144,63 @@ export default async function AdminDashboardPage() {
 
                     {/* Booking Details */}
                     <div className="flex-1">
-                      <div className="flex items-start justify-between mb-4">
+                      <div className="mb-4 flex items-start justify-between">
                         <div>
-                          <h3 className="text-xl font-semibold mb-1">
+                          <h3 className="mb-1 text-xl font-semibold">
                             {booking.carName}
                           </h3>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-muted-foreground text-sm">
                             Booking ID: #{booking.id} | User ID: {booking.userId}
                           </p>
                         </div>
                         <UpdateBookingStatus bookingId={booking.id} currentStatus={booking.status} />
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                      <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
                         <div>
-                          <p className="text-sm text-muted-foreground">Customer</p>
+                          <p className="text-muted-foreground text-sm">Customer</p>
                           <p className="font-medium">{booking.fullName}</p>
-                          <p className="text-sm text-muted-foreground">{booking.email}</p>
-                          <p className="text-sm text-muted-foreground">{booking.phone}</p>
+                          <p className="text-muted-foreground text-sm">{booking.email}</p>
+                          <p className="text-muted-foreground text-sm">{booking.phone}</p>
                           {booking.whatsapp && (
                             <p className="text-sm text-green-600">WhatsApp: {booking.whatsapp}</p>
                           )}
                         </div>
                         <div>
-                          <p className="text-sm text-muted-foreground">Pickup</p>
+                          <p className="text-muted-foreground text-sm">Pickup</p>
                           <p className="font-medium">
                             {format(new Date(booking.checkinDate), "MMM dd, yyyy")}
                           </p>
-                          <p className="text-sm text-muted-foreground mt-1">
+                          <p className="text-muted-foreground mt-1 text-sm">
                             {booking.pickupLocation}
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-muted-foreground">Return</p>
+                          <p className="text-muted-foreground text-sm">Return</p>
                           <p className="font-medium">
                             {format(new Date(booking.checkoutDate), "MMM dd, yyyy")}
                           </p>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between pt-4 border-t">
+                      <div className="flex items-center justify-between border-t pt-4">
                         <div>
-                          <p className="text-sm text-muted-foreground">Total Price</p>
+                          <p className="text-muted-foreground text-sm">Total Price</p>
                           <p className="text-2xl font-bold">
                             ${Number(booking.totalPrice).toFixed(2)}
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-muted-foreground text-sm">
                             Booked: {format(new Date(booking.createdAt), "MMM dd, yyyy HH:mm")}
                           </p>
                           {booking.country && (
-                            <p className="text-sm text-muted-foreground">
+                            <p className="text-muted-foreground text-sm">
                               Location: {booking.city}, {booking.country}
                             </p>
                           )}
                           {booking.ipAddress && (
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-muted-foreground text-xs">
                               IP: {booking.ipAddress}
                             </p>
                           )}
@@ -208,9 +208,9 @@ export default async function AdminDashboardPage() {
                       </div>
 
                       {booking.notes && (
-                        <div className="mt-4 pt-4 border-t">
-                          <p className="text-sm text-muted-foreground">Customer Notes:</p>
-                          <p className="text-sm mt-1">{booking.notes}</p>
+                        <div className="mt-4 border-t pt-4">
+                          <p className="text-muted-foreground text-sm">Customer Notes:</p>
+                          <p className="mt-1 text-sm">{booking.notes}</p>
                         </div>
                       )}
                     </div>

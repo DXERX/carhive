@@ -71,7 +71,7 @@ export function AddCarDialog({ children }: AddCarDialogProps) {
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Add New Car</DialogTitle>
           <DialogDescription>
@@ -127,18 +127,18 @@ export function AddCarDialog({ children }: AddCarDialogProps) {
               {({ open }) => (
                 <div className="flex gap-2">
                   <Button type="button" onClick={() => open()} variant="outline" className="w-full">
-                    <Upload className="w-4 h-4 mr-2" />
+                    <Upload className="mr-2 size-4" />
                     {imageUrl ? "Change Image" : "Upload Image"}
                   </Button>
                   {imageUrl && (
-                    <div className="text-sm text-muted-foreground flex items-center">
+                    <div className="text-muted-foreground flex items-center text-sm">
                       ✓ Uploaded
                     </div>
                   )}
                 </div>
               )}
             </CldUploadWidget>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-muted-foreground text-xs">
               Upload preset: <strong>carhive</strong> (must be created in Cloudinary console as Unsigned)
             </p>
           </div>

@@ -51,7 +51,7 @@ export function DeleteCarDialog({ carId, carName, children }: DeleteCarDialogPro
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-destructive" />
+            <AlertTriangle className="text-destructive size-5" />
             Delete Car
           </DialogTitle>
           <DialogDescription>

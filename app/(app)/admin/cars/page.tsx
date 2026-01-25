@@ -25,8 +25,8 @@ export default async function AdminCarsPage() {
   const cars = await db.select().from(carsTable).orderBy(carsTable.name)
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="flex items-center justify-between mb-8">
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Car Management</h1>
           <p className="text-muted-foreground mt-2">
@@ -35,7 +35,7 @@ export default async function AdminCarsPage() {
         </div>
         <AddCarDialog>
           <Button size="lg">
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="mr-2 size-4" />
             Add New Car
           </Button>
         </AddCarDialog>

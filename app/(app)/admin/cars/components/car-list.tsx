@@ -16,7 +16,7 @@ interface CarListProps {
 export function CarList({ cars }: CarListProps) {
   if (cars.length === 0) {
     return (
-      <div className="text-center py-12">
+      <div className="py-12 text-center">
         <p className="text-muted-foreground">No cars found. Add your first car to get started.</p>
       </div>
     )
@@ -25,7 +25,7 @@ export function CarList({ cars }: CarListProps) {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {cars.map((car) => (
-        <div key={car.id} className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+        <div key={car.id} className="overflow-hidden rounded-lg border transition-shadow hover:shadow-lg">
           <div className="relative h-48 bg-gray-100">
             {car.imageUrl ? (
               <CldImage
@@ -35,21 +35,21 @@ export function CarList({ cars }: CarListProps) {
                 className="object-cover"
               />
             ) : (
-              <div className="flex items-center justify-center h-full text-muted-foreground">
+              <div className="text-muted-foreground flex h-full items-center justify-center">
                 No Image
               </div>
             )}
           </div>
           
           <div className="p-4">
-            <div className="flex items-start justify-between mb-2">
+            <div className="mb-2 flex items-start justify-between">
               <div>
-                <h3 className="font-semibold text-lg">{car.name}</h3>
-                <p className="text-sm text-muted-foreground line-clamp-2">{car.description}</p>
+                <h3 className="text-lg font-semibold">{car.name}</h3>
+                <p className="text-muted-foreground line-clamp-2 text-sm">{car.description}</p>
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2 my-3">
+            <div className="my-3 flex flex-wrap gap-2">
               <Badge variant="secondary" className="text-xs">
                 {car.bodyStyle}
               </Badge>
@@ -61,13 +61,13 @@ export function CarList({ cars }: CarListProps) {
               </Badge>
             </div>
 
-            <div className="grid grid-cols-2 gap-2 text-sm mb-4">
+            <div className="mb-4 grid grid-cols-2 gap-2 text-sm">
               <div className="flex items-center gap-1">
-                <DollarSign className="w-4 h-4 text-muted-foreground" />
+                <DollarSign className="text-muted-foreground size-4" />
                 <span>${car.pricePerDay}/day</span>
               </div>
               <div className="flex items-center gap-1">
-                <Users className="w-4 h-4 text-muted-foreground" />
+                <Users className="text-muted-foreground size-4" />
                 <span>{car.seats} seats</span>
               </div>
             </div>
@@ -75,13 +75,13 @@ export function CarList({ cars }: CarListProps) {
             <div className="flex gap-2">
               <EditCarDialog car={car}>
                 <Button variant="outline" size="sm" className="flex-1">
-                  <Pencil className="w-4 h-4 mr-1" />
+                  <Pencil className="mr-1 size-4" />
                   Edit
                 </Button>
               </EditCarDialog>
               <DeleteCarDialog carId={car.id} carName={car.name}>
                 <Button variant="destructive" size="sm" className="flex-1">
-                  <Trash2 className="w-4 h-4 mr-1" />
+                  <Trash2 className="mr-1 size-4" />
                   Delete
                 </Button>
               </DeleteCarDialog>

@@ -47,8 +47,8 @@ export default async function AdminUsersPage() {
   const adminUsers = users.filter(u => adminUserIds.has(u.id)).length
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="flex items-center justify-between mb-8">
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">User Management</h1>
           <p className="text-muted-foreground mt-2">
@@ -57,14 +57,14 @@ export default async function AdminUsersPage() {
         </div>
         <AddAdminDialog currentAdmins={adminEmails}>
           <Button>
-            <Shield className="w-4 h-4 mr-2" />
+            <Shield className="mr-2 size-4" />
             Add Admin
           </Button>
         </AddAdminDialog>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-3">
         <Card>
           <CardHeader className="pb-3">
             <CardDescription>Total Users</CardDescription>
@@ -102,10 +102,10 @@ export default async function AdminUsersPage() {
               return (
                 <div
                   key={user.id}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex items-center justify-between rounded-lg border p-4 transition-colors hover:bg-gray-50"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-lg">
+                    <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-500 text-lg font-semibold text-white">
                       {user.firstName?.[0] || email?.[0]?.toUpperCase()}
                     </div>
                     <div>
@@ -118,23 +118,23 @@ export default async function AdminUsersPage() {
                         </p>
                         {isUserAdmin && (
                           <Badge variant="default" className="bg-blue-600">
-                            <Shield className="w-3 h-3 mr-1" />
+                            <Shield className="mr-1 size-3" />
                             Admin
                           </Badge>
                         )}
                       </div>
-                      <div className="flex items-center gap-4 text-sm text-muted-foreground mt-1">
+                      <div className="text-muted-foreground mt-1 flex items-center gap-4 text-sm">
                         <span className="flex items-center gap-1">
-                          <Mail className="w-3 h-3" />
+                          <Mail className="size-3" />
                           {email}
                         </span>
                         <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3" />
+                          <Calendar className="size-3" />
                           Joined {createdAt.toLocaleDateString()}
                         </span>
                         {lastSignIn && (
                           <span className="flex items-center gap-1">
-                            <UserCircle className="w-3 h-3" />
+                            <UserCircle className="size-3" />
                             Last seen {lastSignIn.toLocaleDateString()}
                           </span>
                         )}

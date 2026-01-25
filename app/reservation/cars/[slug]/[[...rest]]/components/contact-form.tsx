@@ -98,7 +98,7 @@ export function ContactForm({
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-6">Contact Information</h2>
+      <h2 className="mb-6 text-xl font-semibold">Contact Information</h2>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <Label htmlFor="fullName">Full Name *</Label>
@@ -167,18 +167,18 @@ export function ContactForm({
           />
         </div>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
-          <p className="text-sm text-blue-900 mb-2 flex items-center gap-2">
-            <CheckIcon className="w-4 h-4 text-green-600" />
+        <div className="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
+          <p className="mb-2 flex items-center gap-2 text-sm text-blue-900">
+            <CheckIcon className="size-4 text-green-600" />
             <strong>No Credit Card Required</strong>
           </p>
-          <p className="text-sm text-blue-800 space-y-1">
+          <p className="space-y-1 text-sm text-blue-800">
             <span className="flex items-center gap-2">
-              <CurrencyDollarIcon className="w-4 h-4" />
+              <CurrencyDollarIcon className="size-4" />
               Cash payment available at pickup
             </span>
             <span className="flex items-center gap-2">
-              <HeadsetIcon className="w-4 h-4" />
+              <HeadsetIcon className="size-4" />
               We'll contact you to confirm your booking
             </span>
           </p>
@@ -187,12 +187,12 @@ export function ContactForm({
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full h-12 text-base font-semibold"
+          className="h-12 w-full text-base font-semibold"
         >
           {isSubmitting ? "Sending Request..." : "Send Reservation Request"}
         </Button>
 
-        <p className="text-xs text-neutral-500 text-center mt-4">
+        <p className="mt-4 text-center text-xs text-neutral-500">
           By submitting, you agree to our terms and privacy policy
         </p>
       </form>

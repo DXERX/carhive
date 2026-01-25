@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,6 +12,9 @@ import { sendNotification } from "../actions"
 
 export function SendNotificationForm() {
   const [loading, setLoading] = useState(false)
+  const [target, setTarget] = useState("all")
+  const [type, setType] = useState("info")
+  const formRef = useRef<HTMLFormElement>(null)
   const router = useRouter()
   const { toast } = useToast()
 
@@ -23,8 +26,8 @@ export function SendNotificationForm() {
     const data = {
       title: formData.get("title") as string,
       message: formData.get("message") as string,
-      target: formData.get("target") as string,
-      type: formData.get("type") as string,
+      target,
+      type,
     }
 
     const result = await sendNotification(data)
@@ -35,19 +38,21 @@ export function SendNotificationForm() {
         title: "Notification Sent",
         description: `Notification sent to ${data.target} users`,
       })
-      e.currentTarget.reset()
+      formRef.current?.reset()
+      setTarget("all")
+      setType("info")
       router.refresh()
     } else {
       toast({
         title: "Error",
-        description: result.error,
+        description: (result as any).error || "Failed to send notification",
         variant: "destructive",
       })
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
         <Label htmlFor="title">Notification Title *</Label>
         <Input
@@ -55,6 +60,7 @@ export function SendNotificationForm() {
           name="title"
           required
           placeholder="Important update"
+          disabled={loading}
         />
       </div>
 
@@ -66,15 +72,16 @@ export function SendNotificationForm() {
           required
           placeholder="Your notification message here..."
           rows={4}
+          disabled={loading}
         />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="target">Target Audience *</Label>
-          <Select name="target" defaultValue="all" required>
+          <Select value={target} onValueChange={setTarget} disabled={loading}>
             <SelectTrigger>
-              <SelectValue />
+              <SelectValue placeholder="Select audience" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Users</SelectItem>
@@ -86,9 +93,9 @@ export function SendNotificationForm() {
 
         <div className="space-y-2">
           <Label htmlFor="type">Type *</Label>
-          <Select name="type" defaultValue="info" required>
+          <Select value={type} onValueChange={setType} disabled={loading}>
             <SelectTrigger>
-              <SelectValue />
+              <SelectValue placeholder="Select type" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="info">Info</SelectItem>

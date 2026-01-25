@@ -21,15 +21,8 @@ interface CreateBookingInput {
 
 export async function createBookingAction(data: CreateBookingInput) {
   try {
-    // Get authenticated user
+    // Get authenticated user (optional - supports guest bookings)
     const { userId } = await auth()
-    
-    if (!userId) {
-      return {
-        success: false,
-        error: "You must be signed in to make a reservation",
-      }
-    }
 
     // Get car details
     const car = await getCarBySlug(data.carSlug)
@@ -41,9 +34,9 @@ export async function createBookingAction(data: CreateBookingInput) {
       }
     }
 
-    // Check for duplicate/overlapping bookings
+    // Check for duplicate/overlapping bookings (by userId if authenticated, email if guest)
     const hasDuplicate = await checkDuplicateBooking(
-      userId,
+      { userId, email: data.email },
       car.id,
       data.checkinDate,
       data.checkoutDate
@@ -52,7 +45,9 @@ export async function createBookingAction(data: CreateBookingInput) {
     if (hasDuplicate) {
       return {
         success: false,
-        error: "You already have a pending booking for this car during these dates. Please check your bookings or choose different dates.",
+        error: userId 
+          ? "You already have a pending booking for this car during these dates. Please check your bookings or choose different dates."
+          : "A pending booking already exists with this email for this car during these dates. Please check your email or choose different dates.",
       }
     }
 

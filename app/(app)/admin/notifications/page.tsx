@@ -25,7 +25,7 @@ export default async function AdminNotificationsPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Notifications</h1>
         <p className="text-muted-foreground mt-2">
@@ -38,7 +38,7 @@ export default async function AdminNotificationsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardDescription className="flex items-center gap-2">
-              <Bell className="h-4 w-4" />
+              <Bell className="size-4" />
               Total Sent
             </CardDescription>
             <CardTitle className="text-3xl">0</CardTitle>
@@ -47,7 +47,7 @@ export default async function AdminNotificationsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardDescription className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
+              <Users className="size-4" />
               Active Users
             </CardDescription>
             <CardTitle className="text-3xl">0</CardTitle>
@@ -56,7 +56,7 @@ export default async function AdminNotificationsPage() {
         <Card>
           <CardHeader className="pb-3">
             <CardDescription className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4" />
+              <CheckCircle className="size-4" />
               Read Rate
             </CardDescription>
             <CardTitle className="text-3xl">0%</CardTitle>
@@ -64,7 +64,7 @@ export default async function AdminNotificationsPage() {
         </Card>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2 mt-6">
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
         {/* Send Notification Form */}
         <Card>
           <CardHeader>
@@ -93,12 +93,12 @@ export default async function AdminNotificationsPage() {
       </div>
 
       {/* Feature Info */}
-      <Card className="mt-6 bg-blue-50 border-blue-200">
+      <Card className="mt-6 border-blue-200 bg-blue-50">
         <CardContent className="pt-6">
           <div className="flex items-start gap-3">
-            <Bell className="h-5 w-5 text-blue-600 mt-0.5" />
+            <Bell className="mt-0.5 size-5 text-blue-600" />
             <div>
-              <h3 className="font-semibold text-blue-900 mb-1">Real-time Notifications</h3>
+              <h3 className="mb-1 font-semibold text-blue-900">Real-time Notifications</h3>
               <p className="text-sm text-blue-700">
                 Notifications are displayed to logged-in users when they visit the site. 
                 For real-time push notifications, you can integrate services like Pusher, Socket.io, or Firebase Cloud Messaging.

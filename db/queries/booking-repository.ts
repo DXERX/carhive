@@ -29,6 +29,21 @@ export async function getBookingsByUserId(userId: string): Promise<SelectBooking
   }
 }
 
+export async function getBookingsByEmail(email: string): Promise<SelectBooking[]> {
+  if (!db) return []
+
+  try {
+    return await db
+      .select()
+      .from(bookingsTable)
+      .where(eq(bookingsTable.email, email))
+      .orderBy(desc(bookingsTable.createdAt))
+  } catch (error) {
+    console.error("Error fetching guest bookings:", error)
+    return []
+  }
+}
+
 export async function getAllBookings(): Promise<SelectBooking[]> {
   if (!db) return []
 
@@ -78,7 +93,7 @@ export async function updateBookingStatus(
 }
 
 export async function checkDuplicateBooking(
-  userId: string,
+  identifier: { userId?: string | null; email?: string },
   carId: number,
   checkinDate: Date,
   checkoutDate: Date
@@ -86,16 +101,25 @@ export async function checkDuplicateBooking(
   if (!db) return false
 
   try {
+    // Build the where clause based on whether we have userId or email
+    const whereConditions = [
+      eq(bookingsTable.carId, carId),
+      eq(bookingsTable.status, "pending")
+    ]
+
+    // Check by userId for authenticated users, or by email for guests
+    if (identifier.userId) {
+      whereConditions.push(eq(bookingsTable.userId, identifier.userId))
+    } else if (identifier.email) {
+      whereConditions.push(eq(bookingsTable.email, identifier.email))
+    } else {
+      return false // No identifier provided
+    }
+
     const existingBookings = await db
       .select()
       .from(bookingsTable)
-      .where(
-        and(
-          eq(bookingsTable.userId, userId),
-          eq(bookingsTable.carId, carId),
-          eq(bookingsTable.status, "pending")
-        )
-      )
+      .where(and(...whereConditions))
 
     // Check if there's an overlapping booking
     return existingBookings.some((booking: any) => {

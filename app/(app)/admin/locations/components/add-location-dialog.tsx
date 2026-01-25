@@ -19,15 +19,15 @@ export function AddLocationDialog({ children }: { children: React.ReactNode }) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
           <div className="flex gap-2">
-            <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+            <Info className="mt-0.5 size-5 shrink-0 text-blue-600" />
             <div className="text-sm text-blue-900">
-              <p className="font-medium mb-1">Coming Soon</p>
+              <p className="mb-1 font-medium">Coming Soon</p>
               <p>Location management UI is under development. For now, you can add locations by:</p>
-              <ol className="list-decimal ml-4 mt-2 space-y-1">
-                <li>Updating the <code className="bg-blue-100 px-1 rounded">data/locations.js</code> file</li>
-                <li>Running <code className="bg-blue-100 px-1 rounded">pnpm db:seed</code> to populate the database</li>
+              <ol className="ml-4 mt-2 list-decimal space-y-1">
+                <li>Updating the <code className="rounded bg-blue-100 px-1">data/locations.js</code> file</li>
+                <li>Running <code className="rounded bg-blue-100 px-1">pnpm db:seed</code> to populate the database</li>
               </ol>
             </div>
           </div>

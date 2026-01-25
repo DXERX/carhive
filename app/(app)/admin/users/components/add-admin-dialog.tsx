@@ -47,7 +47,7 @@ export function AddAdminDialog({ children, currentAdmins }: AddAdminDialogProps)
     } else {
       toast({
         title: "Error",
-        description: result.error,
+        description: (result as any).error || "Failed to add admin role",
         variant: "destructive",
       })
     }
@@ -65,7 +65,7 @@ export function AddAdminDialog({ children, currentAdmins }: AddAdminDialogProps)
         </DialogHeader>
 
         <div className="mb-4">
-          <p className="text-sm font-medium mb-2">Current Admins:</p>
+          <p className="mb-2 text-sm font-medium">Current Admins:</p>
           <div className="flex flex-wrap gap-2">
             {currentAdmins.map((admin) => (
               <Badge key={admin} variant="secondary">
@@ -88,7 +88,7 @@ export function AddAdminDialog({ children, currentAdmins }: AddAdminDialogProps)
             />
           </div>
 
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             The user must have an account to be granted admin access.
           </p>
 

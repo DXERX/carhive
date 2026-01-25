@@ -84,7 +84,7 @@ export function AdminSidebar() {
                   : "text-gray-600 hover:bg-white hover:text-gray-900"
               )}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="size-5" />
               {item.title}
             </Link>
           )

@@ -42,7 +42,7 @@ export function UserActions({ userId, userEmail, isAdmin, currentAdmins }: UserA
     } else {
       toast({
         title: "Error",
-        description: result.error,
+        description: (result as any).error || "Failed to add admin role",
         variant: "destructive",
       })
     }
@@ -64,7 +64,7 @@ export function UserActions({ userId, userEmail, isAdmin, currentAdmins }: UserA
     } else {
       toast({
         title: "Error",
-        description: result.error,
+        description: (result as any).error || "Failed to remove admin role",
         variant: "destructive",
       })
     }
@@ -96,24 +96,24 @@ export function UserActions({ userId, userEmail, isAdmin, currentAdmins }: UserA
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" disabled={loading}>
-          <MoreVertical className="h-4 w-4" />
+          <MoreVertical className="size-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {isAdmin ? (
           <DropdownMenuItem onClick={handleRemoveAdmin} className="text-orange-600">
-            <ShieldOff className="h-4 w-4 mr-2" />
+            <ShieldOff className="mr-2 size-4" />
             Remove Admin
           </DropdownMenuItem>
         ) : (
           <DropdownMenuItem onClick={handleAddAdmin}>
-            <Shield className="h-4 w-4 mr-2" />
+            <Shield className="mr-2 size-4" />
             Make Admin
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleBanUser} className="text-red-600">
-          <Ban className="h-4 w-4 mr-2" />
+          <Ban className="mr-2 size-4" />
           Ban User
         </DropdownMenuItem>
       </DropdownMenuContent>

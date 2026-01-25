@@ -59,7 +59,7 @@ export function UserMenuButton() {
                 <p className="text-sm font-medium leading-none">
                   {user?.fullName || "Account"}
                 </p>
-                <p className="text-xs leading-none text-muted-foreground">
+                <p className="text-muted-foreground text-xs leading-none">
                   {user?.emailAddresses[0]?.emailAddress}
                 </p>
               </div>
@@ -77,7 +77,7 @@ export function UserMenuButton() {
               </DropdownMenuItem>
               {isAdmin && (
                 <DropdownMenuItem>
-                  <a href="/admin" className="w-full text-orange-600 font-semibold">Admin Dashboard</a>
+                  <a href="/admin" className="w-full font-semibold text-orange-600">Admin Dashboard</a>
                 </DropdownMenuItem>
               )}
             </DropdownMenuGroup>

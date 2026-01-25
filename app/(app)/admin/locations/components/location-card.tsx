@@ -3,11 +3,12 @@
 import { SelectLocation } from "@/db/schema"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { MapPin, Edit, Power } from "lucide-react"
+import { MapPin, Power } from "lucide-react"
 import { toggleLocationStatus } from "../actions"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
 import { useState } from "react"
+import { EditLocationDialog } from "./edit-location-dialog"
 
 interface LocationCardProps {
   location: SelectLocation
@@ -39,14 +40,14 @@ export function LocationCard({ location }: LocationCardProps) {
   }
 
   return (
-    <div className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
-      <div className="flex items-start justify-between mb-3">
+    <div className="rounded-lg border p-4 transition-colors hover:bg-gray-50">
+      <div className="mb-3 flex items-start justify-between">
         <div>
-          <h3 className="font-semibold text-lg flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-blue-600" />
+          <h3 className="flex items-center gap-2 text-lg font-semibold">
+            <MapPin className="size-5 text-blue-600" />
             {location.name}
           </h3>
-          <p className="text-sm text-muted-foreground mt-1">{location.slug}</p>
+          <p className="text-muted-foreground mt-1 text-sm">{location.slug}</p>
         </div>
         <Badge 
           variant={location.status === 'active' ? 'default' : 'secondary'}
@@ -57,16 +58,16 @@ export function LocationCard({ location }: LocationCardProps) {
       </div>
 
       {location.imageUrl && (
-        <div className="aspect-video rounded-md overflow-hidden mb-3 bg-gray-100">
+        <div className="mb-3 aspect-video overflow-hidden rounded-md bg-gray-100">
           <img 
             src={location.imageUrl} 
             alt={location.name}
-            className="w-full h-full object-cover"
+            className="size-full object-cover"
           />
         </div>
       )}
 
-      <div className="text-sm text-muted-foreground mb-3">
+      <div className="text-muted-foreground mb-3 text-sm">
         <p>Coordinates: {location.latitude}, {location.longitude}</p>
         {location.featured && (
           <Badge variant="outline" className="mt-2">
@@ -83,13 +84,10 @@ export function LocationCard({ location }: LocationCardProps) {
           onClick={handleToggleStatus}
           disabled={loading}
         >
-          <Power className="h-4 w-4 mr-1" />
+          <Power className="mr-1 size-4" />
           {location.status === 'active' ? 'Deactivate' : 'Activate'}
         </Button>
-        <Button variant="outline" size="sm" disabled>
-          <Edit className="h-4 w-4 mr-1" />
-          Edit
-        </Button>
+        <EditLocationDialog location={location} />
       </div>
     </div>
   )

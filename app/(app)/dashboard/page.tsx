@@ -19,31 +19,31 @@ export default async function DashboardPage() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <div className="rounded-lg border bg-card p-6">
+          <div className="bg-card rounded-lg border p-6">
             <h3 className="font-semibold">Active Bookings</h3>
             <p className="mt-2 text-3xl font-bold">0</p>
-            <p className="text-sm text-muted-foreground">Current reservations</p>
+            <p className="text-muted-foreground text-sm">Current reservations</p>
           </div>
 
-          <div className="rounded-lg border bg-card p-6">
+          <div className="bg-card rounded-lg border p-6">
             <h3 className="font-semibold">Total Bookings</h3>
             <p className="mt-2 text-3xl font-bold">0</p>
-            <p className="text-sm text-muted-foreground">All time</p>
+            <p className="text-muted-foreground text-sm">All time</p>
           </div>
 
-          <div className="rounded-lg border bg-card p-6">
+          <div className="bg-card rounded-lg border p-6">
             <h3 className="font-semibold">Favorite Cars</h3>
             <p className="mt-2 text-3xl font-bold">0</p>
-            <p className="text-sm text-muted-foreground">Saved vehicles</p>
+            <p className="text-muted-foreground text-sm">Saved vehicles</p>
           </div>
         </div>
 
-        <div className="rounded-lg border bg-card p-6">
+        <div className="bg-card rounded-lg border p-6">
           <h2 className="mb-4 text-xl font-semibold">Recent Activity</h2>
           <p className="text-muted-foreground">No recent activity to display</p>
         </div>
 
-        <div className="rounded-lg border bg-card p-6">
+        <div className="bg-card rounded-lg border p-6">
           <h2 className="mb-4 text-xl font-semibold">Quick Actions</h2>
           <div className="flex flex-wrap gap-4">
             <a

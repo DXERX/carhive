@@ -40,12 +40,12 @@ export function VipServices() {
               className="group relative overflow-hidden rounded-2xl border bg-white p-6 shadow-sm transition-all hover:shadow-lg"
             >
               <div className="mb-4 inline-flex rounded-lg bg-blue-50 p-3 text-blue-600">
-                <Icon className="h-6 w-6" />
+                <Icon className="size-6" />
               </div>
               <h3 className="mb-2 text-xl font-semibold">
                 {service.title}
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {service.description}
               </p>
             </div>
