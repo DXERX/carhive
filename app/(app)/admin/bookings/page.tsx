@@ -130,17 +130,21 @@ export default async function AdminDashboardPage() {
                 <Card key={booking.id} className="p-6">
                   <div className="flex flex-col gap-6 lg:flex-row">
                     {/* Car Image */}
-                    {booking.carImageUrl && (
-                      <div className="relative h-32 w-full shrink-0 overflow-hidden rounded-lg lg:w-48">
-                        <CldImage
-                          src={booking.carImageUrl}
-                          alt={booking.carName}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 192px"
-                          className="object-cover"
-                        />
-                      </div>
-                    )}
+                    <div className="relative h-32 w-full shrink-0 overflow-hidden rounded-lg lg:w-48">
+                      <CldImage
+                        src={
+                          booking.carImageUrl &&
+                          (booking.carImageUrl.startsWith("/") ||
+                            booking.carImageUrl.startsWith("http"))
+                            ? booking.carImageUrl
+                            : "/assets/images/cars/sedan.jpg"
+                        }
+                        alt={booking.carName}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 192px"
+                        className="object-cover"
+                      />
+                    </div>
 
                     {/* Booking Details */}
                     <div className="flex-1">
