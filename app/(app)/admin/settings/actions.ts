@@ -7,6 +7,8 @@ import { isAdminByEmail } from "@/lib/admin"
 // Settings storage (in production, this should be in a database)
 const settings: Record<string, any> = {
   siteName: "CarHive",
+  brandName: "CarHive",
+  logoUrl: "",
   siteUrl: "https://carhive.com",
   supportEmail: "support@carhive.com",
   emailNotifications: true,
@@ -186,4 +188,32 @@ export async function updateAdvancedSettings(formData: FormData) {
 
 export async function getSettings() {
   return settings
+}
+
+export async function getBrandInfo() {
+  return {
+    brandName: settings.brandName || "CarHive",
+    logoUrl: settings.logoUrl || "",
+  }
+}
+
+export async function updateBrandingSettings(formData: FormData) {
+  const { userId } = await auth()
+  const userEmail = formData.get("userEmail") as string
+
+  if (!userId || !(await isAdminByEmail(userEmail))) {
+    return { success: false, error: "Unauthorized" }
+  }
+
+  try {
+    settings.brandName = formData.get("brandName") as string
+    settings.logoUrl = formData.get("logoUrl") as string
+
+    revalidatePath("/admin/settings")
+    revalidatePath("/", "layout")
+    return { success: true, message: "Branding settings updated successfully" }
+  } catch (error) {
+    console.error("Error updating branding settings:", error)
+    return { success: false, error: "Failed to update branding settings" }
+  }
 }

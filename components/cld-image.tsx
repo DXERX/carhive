@@ -1,9 +1,15 @@
 "use client"
 
-import { CldImage as CldImageDefault, CldImageProps } from "next-cloudinary"
+import Image, { ImageProps } from "next/image"
 
-const CldImage = (props: CldImageProps) => {
-  return <CldImageDefault {...props} />
+type CldImageProps = Omit<ImageProps, "src"> & { src: string }
+
+const CldImage = ({ src, unoptimized, ...props }: CldImageProps) => {
+  const shouldUnopt =
+    src.startsWith("blob:") ||
+    src.startsWith("data:") ||
+    src.startsWith("/uploads/")
+  return <Image src={src} unoptimized={unoptimized || shouldUnopt} {...props} />
 }
 
 export default CldImage

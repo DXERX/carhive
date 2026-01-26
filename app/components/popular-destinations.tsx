@@ -45,7 +45,7 @@ export function PopularDestinations() {
                 return (
                 <article
                   key={id}
-                  className={`relative ${index === featuredLocations.length - 1 ? "md:hidden" : ""}`}
+                  className="relative"
                 >
                   <Button
                     variant={"link"}

@@ -18,6 +18,11 @@ export function Hero() {
           <h1 className="text-center text-xl font-bold sm:text-2xl lg:text-3xl">
             {home.heroTitle}
           </h1>
+          <div className="mt-6 md:hidden">
+            <Suspense fallback={<SearchPanelSkeleton />}>
+              <SearchPanelWrapper />
+            </Suspense>
+          </div>
           <div className="hidden md:block">
             <div className="pt-10">
               <div className="flex items-center justify-center">

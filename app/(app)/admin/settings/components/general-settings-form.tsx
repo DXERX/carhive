@@ -61,6 +61,9 @@ export function GeneralSettingsForm({ userEmail, initialSettings }: GeneralSetti
               placeholder="Site name..." 
               required
             />
+            <p className="text-sm text-muted-foreground">
+              Used in page titles and meta tags
+            </p>
           </div>
           <div className="space-y-2">
             <Label htmlFor="siteUrl">Site URL</Label>

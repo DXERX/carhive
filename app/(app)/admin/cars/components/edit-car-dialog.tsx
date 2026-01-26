@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { SelectCar } from "@/db/schema"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
 import { updateCarAction } from "../actions"
-import { CldUploadWidget } from "next-cloudinary"
 import { Upload } from "lucide-react"
 
 interface EditCarDialogProps {
@@ -22,9 +21,84 @@ interface EditCarDialogProps {
 export function EditCarDialog({ car, children }: EditCarDialogProps) {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [imageUrl, setImageUrl] = useState(car.imageUrl || "")
+  const [imageUrls, setImageUrls] = useState<string[]>(car.imageUrl ? [car.imageUrl] : [])
+  const [uploading, setUploading] = useState(false)
+  const uploadedKeysRef = useRef<Set<string>>(new Set())
   const router = useRouter()
   const { toast } = useToast()
+
+  const handleFilesUpload = async (files: File[]) => {
+    if (!files.length) return
+
+    setUploading(true)
+
+    try {
+      const formData = new FormData()
+      files.forEach((file) => formData.append("files", file))
+
+      const response = await fetch("/api/uploads", {
+        method: "POST",
+        body: formData,
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data?.error || "Upload failed")
+      }
+
+      setImageUrls((prev) => {
+        const uniqueNew = data.urls.filter((url: string) => !prev.includes(url))
+        return [...uniqueNew, ...prev]
+      })
+      toast({
+        title: "Images uploaded",
+        description: `${data.urls.length} image(s) uploaded successfully`,
+      })
+    } catch (error: any) {
+      toast({
+        title: "Upload failed",
+        description: error?.message || "Failed to upload images",
+        variant: "destructive",
+      })
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || [])
+    if (!files.length) return
+
+    const uniqueFiles: File[] = []
+    const skipped: string[] = []
+
+    files.forEach((file) => {
+      const key = `${file.name}-${file.size}-${file.lastModified}`
+      if (uploadedKeysRef.current.has(key)) {
+        skipped.push(file.name)
+        return
+      }
+      uploadedKeysRef.current.add(key)
+      uniqueFiles.push(file)
+    })
+
+    if (skipped.length) {
+      toast({
+        title: "Duplicate images skipped",
+        description: `${skipped.length} image(s) already uploaded`,
+      })
+    }
+
+    if (uniqueFiles.length) {
+      await handleFilesUpload(uniqueFiles)
+    }
+    e.currentTarget.value = ""
+  }
+
+  const removeImage = (url: string) => {
+    setImageUrls((prev) => prev.filter((item) => item !== url))
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -36,7 +110,7 @@ export function EditCarDialog({ car, children }: EditCarDialogProps) {
       name: formData.get("name") as string,
       slug: (formData.get("name") as string).toLowerCase().replace(/\s+/g, "-"),
       description: formData.get("description") as string,
-      imageUrl: imageUrl,
+      imageUrl: imageUrls[0] || car.imageUrl || "/assets/images/cars/sedan.jpg",
       pricePerDay: (parseInt(formData.get("pricePerDay") as string)).toString(),
       currency: formData.get("currency") as string,
       bodyStyle: formData.get("bodyStyle") as string,
@@ -99,52 +173,47 @@ export function EditCarDialog({ car, children }: EditCarDialogProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>Car Image</Label>
-            <CldUploadWidget
-              uploadPreset="carhive"
-              options={{
-                folder: "carhive/cars",
-                sources: ["local", "url", "camera"],
-                multiple: false,
-                maxFiles: 1,
-              }}
-              onSuccess={(result: any) => {
-                console.log("Upload success:", result)
-                setImageUrl(result.info.public_id)
-                toast({
-                  title: "Image uploaded",
-                  description: "Car image uploaded successfully",
-                })
-              }}
-              onError={(error: any) => {
-                console.error("Upload error:", error)
-                toast({
-                  title: "Upload failed",
-                  description: error.message || "Failed to upload image. Please check your Cloudinary upload preset.",
-                  variant: "destructive",
-                })
-              }}
-            >
-              {({ open }) => (
-                <div className="flex gap-2">
-                  <Button type="button" onClick={() => open()} variant="outline" className="w-full">
+            <Label>Car Images</Label>
+            <div className="flex flex-col gap-2">
+              <input
+                id="editCarImages"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFileChange}
+                disabled={uploading}
+                className="hidden"
+              />
+              <label htmlFor="editCarImages">
+                <Button type="button" variant="outline" className="w-full" disabled={uploading} asChild>
+                  <span>
                     <Upload className="mr-2 size-4" />
-                    {imageUrl !== car.imageUrl ? "Change Image" : "Upload New Image"}
-                  </Button>
-                  {imageUrl !== car.imageUrl && (
-                    <div className="text-muted-foreground flex items-center text-sm">
-                      ✓ New image selected
-                    </div>
-                  )}
-                </div>
+                    {uploading ? "Uploading..." : "Upload Images"}
+                  </span>
+                </Button>
+              </label>
+              {imageUrls.length > 0 && (
+                <p className="text-muted-foreground text-xs">
+                  First image will be used as the primary car image.
+                </p>
               )}
-            </CldUploadWidget>
-            {imageUrl && (
-              <p className="text-muted-foreground text-xs">Current: {imageUrl}</p>
+            </div>
+            {imageUrls.length > 0 && (
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {imageUrls.map((url) => (
+                  <div key={url} className="group relative overflow-hidden rounded-md border">
+                    <img src={url} alt="Uploaded" className="h-20 w-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(url)}
+                      className="absolute right-1 top-1 rounded bg-black/70 px-2 py-0.5 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
             )}
-            <p className="text-muted-foreground text-xs">
-              Upload preset: <strong>carhive</strong> (must be created in Cloudinary console as Unsigned)
-            </p>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">

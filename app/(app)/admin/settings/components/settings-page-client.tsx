@@ -19,6 +19,8 @@ import {
   testEmail,
   updateAdvancedSettings,
 } from "../actions"
+import { BrandingSettingsForm } from "./branding-settings-form"
+import { GeneralSettingsForm } from "./general-settings-form"
 
 interface SettingsPageClientProps {
   settings: any
@@ -241,54 +243,11 @@ export function SettingsPageClient({ settings, userEmail }: SettingsPageClientPr
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {/* Branding Settings */}
+        <BrandingSettingsForm userEmail={userEmail} initialSettings={settings} />
+
         {/* General Settings */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Settings className="size-5" />
-              General Settings
-            </CardTitle>
-            <CardDescription>Basic system configuration</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleGeneralSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="siteName">Site Name</Label>
-                <Input
-                  id="siteName"
-                  name="siteName"
-                  value={generalSettings.siteName}
-                  onChange={(e) => setGeneralSettings({ ...generalSettings, siteName: e.target.value })}
-                  placeholder="Site name..."
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="siteUrl">Site URL</Label>
-                <Input
-                  id="siteUrl"
-                  name="siteUrl"
-                  value={generalSettings.siteUrl}
-                  onChange={(e) => setGeneralSettings({ ...generalSettings, siteUrl: e.target.value })}
-                  placeholder="https://..."
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="supportEmail">Support Email</Label>
-                <Input
-                  id="supportEmail"
-                  name="supportEmail"
-                  type="email"
-                  value={generalSettings.supportEmail}
-                  onChange={(e) => setGeneralSettings({ ...generalSettings, supportEmail: e.target.value })}
-                  placeholder="support@..."
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "Saving..." : "Save General Settings"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+        <GeneralSettingsForm userEmail={userEmail} initialSettings={settings} />
 
         {/* Notification Settings */}
         <Card>

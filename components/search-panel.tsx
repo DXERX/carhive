@@ -119,13 +119,13 @@ export function SearchPanel({
 
   return (
     <form onSubmit={submitForm} className="w-full">
-      <div className="whitespace-nowrap rounded-full border border-black/10 bg-white text-black shadow-lg shadow-neutral-900/5 transition-shadow hover:shadow hover:shadow-neutral-900/5">
-        <div className="relative grid h-[var(--search-panel-height)] w-full grid-cols-1 items-center">
-          <div className="grid h-full grid-cols-[33.333333%_33.333333%_33.333333%] items-center justify-center">
+      <div className="rounded-2xl border border-black/10 bg-white text-black shadow-lg shadow-neutral-900/5 transition-shadow hover:shadow hover:shadow-neutral-900/5 sm:rounded-full sm:whitespace-nowrap">
+        <div className="relative grid h-auto w-full grid-cols-1 items-center sm:h-[var(--search-panel-height)]">
+          <div className="grid h-full grid-cols-1 items-center justify-center gap-2 sm:grid-cols-[33.333333%_33.333333%_33.333333%] sm:gap-0">
             <div className="relative h-full">
               <Separator
                 orientation="vertical"
-                className="absolute inset-y-0 right-0 m-auto h-6 shrink-0"
+                className="absolute inset-y-0 right-0 m-auto hidden h-6 shrink-0 sm:block"
               />
               <div className="flex size-full items-center justify-center px-0">
                 <Popover open={open} onOpenChange={setOpen}>
@@ -134,7 +134,7 @@ export function SearchPanel({
                       variant="ghost"
                       role="combobox"
                       aria-expanded={open}
-                      className="size-full flex-col overflow-hidden rounded-full border-none px-5 py-0 focus-visible:z-10"
+                      className="size-full flex-col overflow-hidden rounded-full border-none px-5 py-2 focus-visible:z-10 sm:py-0"
                     >
                       <div className="flex size-full items-center justify-between">
                         <div className="flex size-full flex-col items-start justify-center truncate">
@@ -196,14 +196,14 @@ export function SearchPanel({
             <div className="relative h-full">
               <Separator
                 orientation="vertical"
-                className="absolute inset-y-0 right-0 m-auto h-6 shrink-0"
+                className="absolute inset-y-0 right-0 m-auto hidden h-6 shrink-0 sm:block"
               />
               <div className="flex size-full items-center justify-center px-0">
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant={"ghost"}
-                      className="size-full flex-col overflow-hidden rounded-full border-none px-5 py-0 focus-visible:z-10"
+                      className="size-full flex-col overflow-hidden rounded-full border-none px-5 py-2 focus-visible:z-10 sm:py-0"
                     >
                       <div className="flex size-full flex-col items-start justify-center truncate">
                         <div className="text-[13px] font-bold">{labels.checkIn}</div>
@@ -237,7 +237,7 @@ export function SearchPanel({
                   <PopoverTrigger asChild>
                     <Button
                       variant={"ghost"}
-                      className="size-full flex-col overflow-hidden rounded-full border-none py-0 pl-5 pr-16 focus-visible:z-10"
+                      className="size-full flex-col overflow-hidden rounded-full border-none py-2 pl-5 pr-5 focus-visible:z-10 sm:py-0 sm:pr-16"
                     >
                       <div className="flex size-full flex-col items-start justify-center truncate">
                         <div className="text-[13px] font-bold">{labels.checkOut}</div>
@@ -266,10 +266,10 @@ export function SearchPanel({
               </div>
             </div>
           </div>
-          <div className="absolute right-2 z-20">
+          <div className="mt-2 flex w-full justify-center sm:absolute sm:right-2 sm:mt-0 sm:w-auto sm:justify-end sm:z-20">
             <Button
               type="submit"
-              className="flex size-[calc(var(--search-panel-height)_-_1.25rem)] shrink-0 items-center justify-center rounded-full bg-black text-white"
+              className="flex h-10 w-full max-w-[220px] items-center justify-center rounded-full bg-black text-white sm:size-[calc(var(--search-panel-height)_-_1.25rem)] sm:max-w-none"
             >
               <span className="sr-only">{labels.search}</span>
               <SearchIcon className="size-[calc((var(--search-panel-height)_-_1.25rem)/2.66)] shrink-0 [stroke-width:3px]" />
