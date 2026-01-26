@@ -21,6 +21,10 @@ export async function CarCard({ car }: CarCardProps) {
     return null
   }
 
+  const imageSrc = car.imageUrl && (car.imageUrl.startsWith("/") || car.imageUrl.startsWith("http"))
+    ? car.imageUrl
+    : `/assets/images/cars/catalog/${car.slug}.jpg`
+
   const locale = getLocale()
   const { cars } = getTranslations(locale)
 
@@ -38,7 +42,7 @@ export async function CarCard({ car }: CarCardProps) {
     <article className="overflow-hidden rounded-[10px] border border-black/[0.08] bg-white text-sm shadow-sm">
       <div className="relative aspect-video h-40 w-full">
         <CldImage
-          src={car.imageUrl}
+          src={imageSrc}
           alt={localizedName}
           fill
           className="object-cover"

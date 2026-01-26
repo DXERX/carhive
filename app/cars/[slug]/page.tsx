@@ -66,6 +66,9 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
       : locale === "tr"
         ? (car as any).featuresTr ?? car.features
         : car.features
+  const imageSrc = car.imageUrl && (car.imageUrl.startsWith("/") || car.imageUrl.startsWith("http"))
+    ? car.imageUrl
+    : `/assets/images/cars/catalog/${car.slug}.jpg`
 
   return (
     <main
@@ -85,7 +88,7 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
           <div className="grid h-80 grid-cols-1 grid-rows-1 gap-3 md:h-[34rem] md:grid-cols-4 md:grid-rows-2">
             <div className="relative overflow-hidden md:col-span-3 md:row-span-2 md:rounded-l-2xl">
               <CldImage
-                src={`carhive/cars/car-interior_d6nmyn`}
+                src={imageSrc}
                 alt={carDetails.imageInterior}
                 priority
                 fill
@@ -95,7 +98,7 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
             </div>
             <div className="relative col-span-1 row-span-1 hidden overflow-hidden rounded-tr-2xl md:block">
               <CldImage
-                src={`carhive/cars/car-door-panel_puxkbc`}
+                src={imageSrc}
                 alt={carDetails.imageDoorPanel}
                 priority
                 fill
@@ -105,7 +108,7 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
             </div>
             <div className="relative col-span-1 row-span-1 hidden overflow-hidden rounded-br-2xl md:block">
               <CldImage
-                src={`carhive/cars/car-seat_rnzgv6`}
+                src={imageSrc}
                 alt={carDetails.imageSeat}
                 priority
                 fill

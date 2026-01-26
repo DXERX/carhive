@@ -10,6 +10,9 @@ export function CarDetails({ car }: { car: SelectCar }) {
   const { cars, carDetails } = getTranslations(locale)
   const powertrainKey = car.powertrain.toLowerCase() as keyof typeof cars.powertrainLabels
   const transmissionKey = car.transmission.toLowerCase() as keyof typeof cars.transmissionLabels
+  const imageSrc = car.imageUrl && (car.imageUrl.startsWith("/") || car.imageUrl.startsWith("http"))
+    ? car.imageUrl
+    : `/assets/images/cars/catalog/${car.slug}.jpg`
   const localizedName =
     locale === "ar"
       ? (car as any).nameAr ?? car.name
@@ -21,7 +24,7 @@ export function CarDetails({ car }: { car: SelectCar }) {
     <div className="grid grid-cols-1 gap-5 min-[360px]:flex">
       <div className="relative aspect-square w-[100px] shrink-0">
         <CldImage
-          src={car.imageUrl}
+          src={imageSrc}
           alt={car.name}
           className="rounded-xl object-cover"
           fill
