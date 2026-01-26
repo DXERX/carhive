@@ -1,5 +1,5 @@
 import { db } from "@/db"
-import { bookingsTable, SelectBooking, InsertBooking } from "@/db/schema"
+import { bookingsTable, carsTable, SelectBooking, InsertBooking } from "@/db/schema"
 import { eq, desc, and } from "drizzle-orm"
 
 export async function createBooking(data: InsertBooking): Promise<SelectBooking | null> {
@@ -18,11 +18,22 @@ export async function getBookingsByUserId(userId: string): Promise<SelectBooking
   if (!db) return []
 
   try {
-    return await db
-      .select()
+    const rows = await db
+      .select({
+        booking: bookingsTable,
+        carSlug: carsTable.slug,
+        carImageUrl: carsTable.imageUrl,
+      })
       .from(bookingsTable)
+      .leftJoin(carsTable, eq(bookingsTable.carId, carsTable.id))
       .where(eq(bookingsTable.userId, userId))
       .orderBy(desc(bookingsTable.createdAt))
+
+    return rows.map(({ booking, carSlug, carImageUrl }) => ({
+      ...booking,
+      carSlug,
+      carImageUrl: booking.carImageUrl || carImageUrl || null,
+    })) as SelectBooking[]
   } catch (error) {
     console.error("Error fetching user bookings:", error)
     return []
@@ -33,11 +44,22 @@ export async function getBookingsByEmail(email: string): Promise<SelectBooking[]
   if (!db) return []
 
   try {
-    return await db
-      .select()
+    const rows = await db
+      .select({
+        booking: bookingsTable,
+        carSlug: carsTable.slug,
+        carImageUrl: carsTable.imageUrl,
+      })
       .from(bookingsTable)
+      .leftJoin(carsTable, eq(bookingsTable.carId, carsTable.id))
       .where(eq(bookingsTable.email, email))
       .orderBy(desc(bookingsTable.createdAt))
+
+    return rows.map(({ booking, carSlug, carImageUrl }) => ({
+      ...booking,
+      carSlug,
+      carImageUrl: booking.carImageUrl || carImageUrl || null,
+    })) as SelectBooking[]
   } catch (error) {
     console.error("Error fetching guest bookings:", error)
     return []
@@ -48,10 +70,21 @@ export async function getAllBookings(): Promise<SelectBooking[]> {
   if (!db) return []
 
   try {
-    return await db
-      .select()
+    const rows = await db
+      .select({
+        booking: bookingsTable,
+        carSlug: carsTable.slug,
+        carImageUrl: carsTable.imageUrl,
+      })
       .from(bookingsTable)
+      .leftJoin(carsTable, eq(bookingsTable.carId, carsTable.id))
       .orderBy(desc(bookingsTable.createdAt))
+
+    return rows.map(({ booking, carSlug, carImageUrl }) => ({
+      ...booking,
+      carSlug,
+      carImageUrl: booking.carImageUrl || carImageUrl || null,
+    })) as SelectBooking[]
   } catch (error) {
     console.error("Error fetching all bookings:", error)
     return []
@@ -62,11 +95,23 @@ export async function getBookingById(id: number): Promise<SelectBooking | null> 
   if (!db) return null
 
   try {
-    const [booking] = await db
-      .select()
+    const [row] = await db
+      .select({
+        booking: bookingsTable,
+        carSlug: carsTable.slug,
+        carImageUrl: carsTable.imageUrl,
+      })
       .from(bookingsTable)
+      .leftJoin(carsTable, eq(bookingsTable.carId, carsTable.id))
       .where(eq(bookingsTable.id, id))
-    return booking || null
+
+    if (!row) return null
+
+    return {
+      ...row.booking,
+      carSlug: row.carSlug,
+      carImageUrl: row.booking.carImageUrl || row.carImageUrl || null,
+    } as SelectBooking
   } catch (error) {
     console.error("Error fetching booking:", error)
     return null

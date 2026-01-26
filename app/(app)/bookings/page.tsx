@@ -85,7 +85,9 @@ export default async function BookingsPage() {
                         (booking.carImageUrl.startsWith("/") ||
                           booking.carImageUrl.startsWith("http"))
                           ? booking.carImageUrl
-                          : "/assets/images/cars/sedan.jpg"
+                          : booking.carSlug
+                            ? `/assets/images/cars/catalog/${booking.carSlug}.jpg`
+                            : "/assets/images/cars/sedan.jpg"
                       }
                       alt={booking.carName}
                       fill
