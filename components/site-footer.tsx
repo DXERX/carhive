@@ -1,49 +1,13 @@
 import { siteConfig } from "@/config/site"
+import { getLocale } from "@/lib/get-locale"
+import { getTranslations } from "@/lib/i18n"
 
 import { LogoLink } from "./logoLink"
 import { Button } from "./ui/button"
 
-const footerLinks = [
-  {
-    title: "Services",
-    links: [
-      "Car Rentals",
-      "Insurance Options",
-      "Corporate Rentals",
-      "Special Offers",
-      "FAQs",
-    ],
-  },
-  {
-    title: "Resources",
-    links: [
-      "Help Center",
-      "Privacy Policy",
-      "Terms of Service",
-      "Accessibility",
-      "Vehicle Guides",
-      "Customer Testimonials",
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      "About",
-      "Contact Us",
-      "Blog",
-      "Partners",
-      "Customers",
-      "Careers",
-      "Press",
-    ],
-  },
-  {
-    title: "Social",
-    links: ["Youtube", "Twitter", "Instagram", "Facebook"],
-  },
-]
-
 export function SiteFooter() {
+  const locale = getLocale()
+  const { footer } = getTranslations(locale)
   const githubUrl = siteConfig.links.github
 
   return (
@@ -54,7 +18,7 @@ export function SiteFooter() {
             <LogoLink />
           </div>
           <nav className="col-span-full grid grid-cols-12 gap-x-6 gap-y-11 md:col-span-9">
-            {footerLinks.map((section) => (
+            {footer.sections.map((section) => (
               <ul
                 key={section.title}
                 className="col-span-6 flex flex-col gap-3 md:col-span-3 lg:gap-3"
@@ -82,7 +46,7 @@ export function SiteFooter() {
           </nav>
           <div className="col-span-full">
             <p className="text-[13px] leading-6 text-neutral-600 sm:text-sm">
-              Built by{" "}
+              {footer.builtBy}{" "}
               <Button
                 variant={"link"}
                 className="h-auto rounded-none p-0 text-[13px] font-normal leading-none sm:text-sm"

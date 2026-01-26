@@ -8,6 +8,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { CheckIcon } from "@/components/icons/check"
 import { HeadsetIcon } from "@/components/icons/headset"
 import { Mail } from "lucide-react"
+import { useLocale } from "@/hooks/use-locale"
+import { getTranslations } from "@/lib/i18n"
 
 interface SuccessPageClientProps {
   email?: string
@@ -17,6 +19,8 @@ interface SuccessPageClientProps {
 export function SuccessPageClient({ email, carName }: SuccessPageClientProps) {
   const router = useRouter()
   const [countdown, setCountdown] = useState(10)
+  const { locale } = useLocale()
+  const { reservationSuccess } = getTranslations(locale)
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -40,17 +44,22 @@ export function SuccessPageClient({ email, carName }: SuccessPageClientProps) {
           <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-full bg-green-100">
             <CheckIcon className="size-8 text-green-600" />
           </div>
-          <CardTitle className="text-2xl md:text-3xl">Booking Request Received!</CardTitle>
-          <CardDescription className="text-base">Thank you for choosing CarHive</CardDescription>
+          <CardTitle className="text-2xl md:text-3xl">{reservationSuccess.title}</CardTitle>
+          <CardDescription className="text-base">{reservationSuccess.subtitle}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="rounded-lg border bg-green-50 p-4 text-center">
             <p className="text-green-900">
-              <strong>We've received your reservation request{carName ? ` for ${carName}` : ""}!</strong>
+              <strong>
+                {reservationSuccess.received.replace(
+                  "{carName}",
+                  carName ? ` ${carName}` : ""
+                )}
+              </strong>
             </p>
             {email && (
               <p className="text-muted-foreground mt-2 text-sm">
-                A confirmation email has been sent to <strong>{email}</strong>
+                {reservationSuccess.emailSent.replace("{email}", email)}
               </p>
             )}
           </div>
@@ -61,10 +70,9 @@ export function SuccessPageClient({ email, carName }: SuccessPageClientProps) {
                 <HeadsetIcon className="size-5 text-blue-600" />
               </div>
               <div>
-                <h3 className="font-semibold">What happens next?</h3>
+                <h3 className="font-semibold">{reservationSuccess.nextTitle}</h3>
                 <p className="text-muted-foreground text-sm">
-                  Our team will review your booking request and contact you within 24 hours to confirm your reservation
-                  and provide payment details.
+                  {reservationSuccess.nextDescription}
                 </p>
               </div>
             </div>
@@ -74,10 +82,9 @@ export function SuccessPageClient({ email, carName }: SuccessPageClientProps) {
                 <Mail className="size-5 text-purple-600" />
               </div>
               <div>
-                <h3 className="font-semibold">Check your email</h3>
+                <h3 className="font-semibold">{reservationSuccess.emailTitle}</h3>
                 <p className="text-muted-foreground text-sm">
-                  We've sent a confirmation email with your booking details. Please check your inbox (and spam folder
-                  just in case).
+                  {reservationSuccess.emailDescription}
                 </p>
               </div>
             </div>
@@ -87,9 +94,9 @@ export function SuccessPageClient({ email, carName }: SuccessPageClientProps) {
                 <CheckIcon className="size-5 text-orange-600" />
               </div>
               <div>
-                <h3 className="font-semibold">Booking Reference</h3>
+                <h3 className="font-semibold">{reservationSuccess.referenceTitle}</h3>
                 <p className="text-muted-foreground text-sm">
-                  Your booking is being processed. You'll receive a booking reference number via email once confirmed.
+                  {reservationSuccess.referenceDescription}
                 </p>
               </div>
             </div>
@@ -97,7 +104,7 @@ export function SuccessPageClient({ email, carName }: SuccessPageClientProps) {
 
           <div className="rounded-lg border bg-blue-50 p-4">
             <p className="text-sm text-blue-900">
-              <strong>Need help?</strong> Contact us at{" "}
+              <strong>{reservationSuccess.needHelp}</strong> Contact us at{" "}
               <a href="mailto:support@carhive.com" className="underline">
                 support@carhive.com
               </a>{" "}
@@ -107,15 +114,15 @@ export function SuccessPageClient({ email, carName }: SuccessPageClientProps) {
 
           <div className="flex flex-col gap-3 pt-4 sm:flex-row">
             <Button asChild className="flex-1">
-              <Link href="/">Return to Home</Link>
+              <Link href="/">{reservationSuccess.returnHome}</Link>
             </Button>
             <Button asChild variant="outline" className="flex-1">
-              <Link href="/cars">Browse More Cars</Link>
+              <Link href="/cars">{reservationSuccess.browseMoreCars}</Link>
             </Button>
           </div>
 
           <div className="text-muted-foreground border-t pt-4 text-center text-sm">
-            Redirecting to home in <strong>{countdown}</strong> seconds...
+            {reservationSuccess.redirecting.replace("{count}", String(countdown))}
           </div>
         </CardContent>
       </Card>

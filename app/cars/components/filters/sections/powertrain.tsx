@@ -2,6 +2,8 @@ import { Dispatch, SetStateAction } from "react"
 
 import { Separator } from "@/components/ui/separator"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { useLocale } from "@/hooks/use-locale"
+import { getTranslations } from "@/lib/i18n"
 
 import { Powertrain, SelectedFilters } from "../types"
 
@@ -30,6 +32,9 @@ export function PowertrainFilters({
   selectedFilters,
   setSelectedFilters,
 }: PowertrainFiltersProps) {
+  const { locale } = useLocale()
+  const { cars } = getTranslations(locale)
+
   const handlePowertrainChange = (powertrain: Powertrain | undefined) => {
     setSelectedFilters((prevFilters) => ({
       ...prevFilters,
@@ -39,7 +44,7 @@ export function PowertrainFilters({
 
   return (
     <section>
-      <h3 className="text-lg font-semibold">Powertrain</h3>
+      <h3 className="text-lg font-semibold">{cars.powertrain}</h3>
       <div className="pt-5">
         <ToggleGroup
           type="single"
@@ -56,7 +61,7 @@ export function PowertrainFilters({
               className="group relative m-0 size-full rounded-none p-0 first:rounded-l-xl last:rounded-r-xl hover:bg-none [&>span]:data-[state=off]:border-transparent [&>span]:data-[state=on]:border-black [&>span]:data-[state=off]:bg-transparent [&>span]:data-[state=on]:bg-neutral-50"
             >
               <span className="text-medium flex size-full items-center justify-center rounded-xl border-2 border-transparent text-[15px] group-hover:bg-neutral-50">
-                {name}
+                {cars.powertrainLabels[slug] ?? name}
               </span>
               <Separator
                 orientation="vertical"

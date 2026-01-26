@@ -1,4 +1,6 @@
 import { formatDateRangeForDisplay } from "@/lib/dates"
+import { getLocale } from "@/lib/get-locale"
+import { getTranslations } from "@/lib/i18n"
 
 export function BookDetails({
   checkinDate,
@@ -11,13 +13,16 @@ export function BookDetails({
     throw new Error("Both check-in and check-out dates must be provided.")
   }
 
+  const locale = getLocale()
+  const { reservation } = getTranslations(locale)
+
   return (
     <>
-      <h2 className="text-[22px] font-semibold">Your trip</h2>
+      <h2 className="text-[22px] font-semibold">{reservation.yourTrip}</h2>
       <div className="pt-5">
         <div className="space-y-1">
           <h3 className="text-base">
-            <strong>Dates</strong>
+            <strong>{reservation.dates}</strong>
           </h3>
           <p>
             {formatDateRangeForDisplay(

@@ -9,20 +9,33 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import { FilledStarIcon } from "@/components/icons/filled-star"
+import { getLocale } from "@/lib/get-locale"
+import { getTranslations } from "@/lib/i18n"
 
 export function Testimonials() {
+  const locale = getLocale()
+  const { home } = getTranslations(locale)
+
   return (
     <section>
       <div className="mx-auto max-w-none px-5 sm:max-w-[90%] sm:px-0 2xl:max-w-8xl">
         <h2 className="text-balance text-[19px] font-bold sm:text-[21px] lg:text-[23px] xl:text-center">
-          What Our Customers Are Saying
+          {home.testimonialsTitle}
         </h2>
         <div className="pt-6 lg:pt-8">
           <div className="relative">
             <div className="before:absolute before:-left-1 before:top-0 before:z-10 before:h-full before:w-[7%] before:bg-gradient-to-r before:from-white before:content-[''] lg:before:-left-16 lg:before:w-[10%]"></div>
             <Carousel>
               <CarouselContent className="m-0 space-x-4 lg:space-x-6">
-                {testimonials.map(({ id, name, comment, imageUrl, rating }) => {
+                {testimonials.map(
+                  ({ id, name, comment, commentAr, commentTr, imageUrl, rating }) => {
+                    const localizedComment =
+                      locale === "ar"
+                        ? commentAr ?? comment
+                        : locale === "tr"
+                          ? commentTr ?? comment
+                          : comment
+
                   return (
                     <CarouselItem
                       key={id}
@@ -32,7 +45,7 @@ export function Testimonials() {
                         {/* Rating Section */}
                         <div
                           className="flex items-center"
-                          aria-label={`Rating: ${rating} out of 5`}
+                          aria-label={home.ratingLabel.replace("{rating}", String(rating))}
                         >
                           {[...Array(rating)].map((_, index) => (
                             <FilledStarIcon
@@ -44,7 +57,7 @@ export function Testimonials() {
                         <div className="pt-4">
                           {/* Comment Section */}
                           <blockquote className="text-balance text-[14px] leading-[23px] text-neutral-600 sm:text-[15px] sm:leading-normal md:leading-[26px] lg:text-[16px]">
-                            “{comment}”
+                            “{localizedComment}”
                           </blockquote>
                         </div>
                         <div className="pt-8">
@@ -66,7 +79,8 @@ export function Testimonials() {
                       </figure>
                     </CarouselItem>
                   )
-                })}
+                  }
+                )}
               </CarouselContent>
               <CarouselPrevious className="-left-4 z-20 lg:-left-12" />
               <CarouselNext className="-right-4 z-20 lg:-right-12" />

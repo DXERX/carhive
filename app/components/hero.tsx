@@ -1,20 +1,30 @@
-import { SearchPanelClient } from "@/components/search-panel-client"
+import { Suspense } from "react"
+
+import { SearchPanelWrapper } from "@/components/search-panel-wrapper"
+import { SearchPanelSkeleton } from "@/components/skeletons/search-panel"
+import { getLocale } from "@/lib/get-locale"
+import { getTranslations } from "@/lib/i18n"
 
 import { LogoSlider } from "./logo-slider"
 
 export function Hero() {
+  const locale = getLocale()
+  const { home } = getTranslations(locale)
+
   return (
     <section className="bg-gradient-to-b from-white to-neutral-50">
       <div className="mx-auto w-full max-w-none px-5 sm:max-w-[90%] sm:px-0 2xl:max-w-8xl">
         <div className="pt-10 sm:pt-14 md:pt-20">
           <h1 className="text-center text-xl font-bold sm:text-2xl lg:text-3xl">
-            Your Road Trip Starts Here
+            {home.heroTitle}
           </h1>
           <div className="hidden md:block">
             <div className="pt-10">
               <div className="flex items-center justify-center">
                 <div className="w-[860px]">
-                  <SearchPanelClient />
+                  <Suspense fallback={<SearchPanelSkeleton />}>
+                    <SearchPanelWrapper />
+                  </Suspense>
                 </div>
               </div>
             </div>

@@ -28,6 +28,51 @@ interface SettingsPageClientProps {
 export function SettingsPageClient({ settings, userEmail }: SettingsPageClientProps) {
   const [isPending, startTransition] = useTransition()
   const { toast } = useToast()
+  const [advancedLanguage, setAdvancedLanguage] = useState<"en" | "ar" | "tr">("en")
+
+  const advancedTranslations = {
+    en: {
+      title: "Advanced Settings",
+      description: "Advanced system configuration",
+      languageLabel: "Language",
+      maintenanceTitle: "Maintenance Mode",
+      maintenanceDescription: "Disable public access for maintenance",
+      debugTitle: "Debug Mode",
+      debugDescription: "Show detailed error messages",
+      rateLimitTitle: "API Rate Limiting",
+      rateLimitDescription: "Limit API requests per user",
+      saving: "Saving...",
+      save: "Save Advanced Settings",
+    },
+    ar: {
+      title: "الإعدادات المتقدمة",
+      description: "تهيئة النظام المتقدمة",
+      languageLabel: "اللغة",
+      maintenanceTitle: "وضع الصيانة",
+      maintenanceDescription: "تعطيل الوصول العام لأعمال الصيانة",
+      debugTitle: "وضع التصحيح",
+      debugDescription: "إظهار رسائل الخطأ التفصيلية",
+      rateLimitTitle: "تحديد معدل واجهة برمجة التطبيقات",
+      rateLimitDescription: "تحديد عدد طلبات واجهة برمجة التطبيقات لكل مستخدم",
+      saving: "جارٍ الحفظ...",
+      save: "حفظ الإعدادات المتقدمة",
+    },
+    tr: {
+      title: "Gelişmiş Ayarlar",
+      description: "Gelişmiş sistem yapılandırması",
+      languageLabel: "Dil",
+      maintenanceTitle: "Bakım Modu",
+      maintenanceDescription: "Bakım için genel erişimi devre dışı bırakın",
+      debugTitle: "Hata Ayıklama Modu",
+      debugDescription: "Ayrıntılı hata mesajlarını göster",
+      rateLimitTitle: "API Hız Sınırı",
+      rateLimitDescription: "Kullanıcı başına API isteklerini sınırla",
+      saving: "Kaydediliyor...",
+      save: "Gelişmiş Ayarları Kaydet",
+    },
+  } as const
+
+  const advancedText = advancedTranslations[advancedLanguage]
   
   // State for all settings
   const [generalSettings, setGeneralSettings] = useState({
@@ -507,20 +552,33 @@ export function SettingsPageClient({ settings, userEmail }: SettingsPageClientPr
       </div>
 
       {/* Advanced Settings */}
-      <Card className="mt-6">
+      <Card className="mt-6" dir={advancedLanguage === "ar" ? "rtl" : "ltr"}>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Globe className="size-5" />
-            Advanced Settings
+            {advancedText.title}
           </CardTitle>
-          <CardDescription>Advanced system configuration</CardDescription>
+          <CardDescription>{advancedText.description}</CardDescription>
+          <div className="mt-4 flex items-center gap-2">
+            <Label htmlFor="advanced-language">{advancedText.languageLabel}</Label>
+            <select
+              id="advanced-language"
+              className="h-9 rounded-md border border-input bg-background px-2 text-sm"
+              value={advancedLanguage}
+              onChange={(e) => setAdvancedLanguage(e.target.value as "en" | "ar" | "tr")}
+            >
+              <option value="en">English</option>
+              <option value="ar">العربية</option>
+              <option value="tr">Türkçe</option>
+            </select>
+          </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleAdvancedSubmit} className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <Label>Maintenance Mode</Label>
-                <p className="text-muted-foreground text-sm">Disable public access for maintenance</p>
+                <Label>{advancedText.maintenanceTitle}</Label>
+                <p className="text-muted-foreground text-sm">{advancedText.maintenanceDescription}</p>
               </div>
               <Switch
                 checked={advancedSettings.maintenanceMode}
@@ -531,8 +589,8 @@ export function SettingsPageClient({ settings, userEmail }: SettingsPageClientPr
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <Label>Debug Mode</Label>
-                <p className="text-muted-foreground text-sm">Show detailed error messages</p>
+                <Label>{advancedText.debugTitle}</Label>
+                <p className="text-muted-foreground text-sm">{advancedText.debugDescription}</p>
               </div>
               <Switch
                 checked={advancedSettings.debugMode}
@@ -541,8 +599,8 @@ export function SettingsPageClient({ settings, userEmail }: SettingsPageClientPr
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <Label>API Rate Limiting</Label>
-                <p className="text-muted-foreground text-sm">Limit API requests per user</p>
+                <Label>{advancedText.rateLimitTitle}</Label>
+                <p className="text-muted-foreground text-sm">{advancedText.rateLimitDescription}</p>
               </div>
               <Switch
                 checked={advancedSettings.apiRateLimiting}
@@ -552,7 +610,7 @@ export function SettingsPageClient({ settings, userEmail }: SettingsPageClientPr
               />
             </div>
             <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending ? "Saving..." : "Save Advanced Settings"}
+              {isPending ? advancedText.saving : advancedText.save}
             </Button>
           </form>
         </CardContent>

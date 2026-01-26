@@ -2,40 +2,26 @@ import { ClickIcon } from "@/components/icons/click"
 import { FilterSearchIcon } from "@/components/icons/filter-search"
 import { MapPinIcon } from "@/components/icons/map-pin"
 import { ShieldCheckIcon } from "@/components/icons/shield-check"
-
-const features = [
-  {
-    icon: ClickIcon,
-    title: "Easy Booking",
-    description: "Simple process to book your car in just a few clicks. No hidden fees, transparent pricing.",
-  },
-  {
-    icon: ShieldCheckIcon,
-    title: "Secure & Reliable",
-    description: "Your safety is our priority. All vehicles are inspected and properly insured.",
-  },
-  {
-    icon: MapPinIcon,
-    title: "Istanbul Airport Service",
-    description: "Convenient pickup and dropoff directly from Istanbul Airport locations.",
-  },
-  {
-    icon: FilterSearchIcon,
-    title: "Wide Selection",
-    description: "Choose from our diverse fleet of well-maintained vehicles to match your needs.",
-  },
-]
+import { getLocale } from "@/lib/get-locale"
+import { getTranslations } from "@/lib/i18n"
 
 export function Features() {
+  const locale = getLocale()
+  const { home } = getTranslations(locale)
+
+  const featureIcons = [ClickIcon, ShieldCheckIcon, MapPinIcon, FilterSearchIcon]
+
   return (
     <section>
       <div className="mx-auto max-w-none px-5 sm:max-w-[90%] sm:px-0 2xl:max-w-7xl">
         <h2 className="text-balance text-[19px] font-bold sm:text-[21px] lg:text-[23px] xl:text-center">
-          How It Works
+          {home.featuresTitle}
         </h2>
         <div className="pt-8 lg:pt-10">
           <div className="grid grid-cols-1 items-start justify-between gap-x-5 gap-y-9 text-neutral-600 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-10 lg:grid-cols-4">
-            {features.map(({ icon: Icon, title, description }, index) => (
+            {home.features.map(({ title, description }, index) => {
+              const Icon = featureIcons[index] ?? ClickIcon
+              return (
               <div key={index} className="flex flex-col gap-2.5">
                 <div className="flex flex-col gap-2 text-neutral-950 sm:flex-row sm:items-center">
                   <Icon className="size-4 shrink-0" />
@@ -47,7 +33,8 @@ export function Features() {
                   {description}
                 </p>
               </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </div>

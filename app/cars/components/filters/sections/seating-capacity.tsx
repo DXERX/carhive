@@ -3,6 +3,8 @@ import { Dispatch, SetStateAction, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { MinusIcon } from "@/components/icons/minus"
 import { PlusIcon } from "@/components/icons/plus"
+import { useLocale } from "@/hooks/use-locale"
+import { getTranslations } from "@/lib/i18n"
 
 import { SelectedFilters } from "../types"
 
@@ -15,6 +17,9 @@ export function SeatingCapacityFilters({
   selectedFilters,
   setSelectedFilters,
 }: SeatingCapacityFiltersProps) {
+  const { locale } = useLocale()
+  const { cars } = getTranslations(locale)
+
   const [counter, setCounter] = useState(selectedFilters.seats || 0)
 
   const handleMinusClick = () => {
@@ -42,7 +47,7 @@ export function SeatingCapacityFilters({
   return (
     <section>
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Seats</h3>
+        <h3 className="text-lg font-semibold">{cars.seats}</h3>
         <div className="flex flex-row items-center justify-center gap-x-4">
           <Button
             onClick={handleMinusClick}
@@ -56,7 +61,7 @@ export function SeatingCapacityFilters({
 
           <div className="w-9 text-center tabular-nums">
             {!selectedFilters.seats
-              ? "Any"
+              ? cars.any
               : selectedFilters.seats === 7
                 ? `${selectedFilters.seats}+`
                 : selectedFilters.seats}

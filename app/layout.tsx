@@ -7,6 +7,7 @@ import "../styles/globals.css"
 
 import { siteConfig } from "@/config/site"
 import { fontSans } from "@/lib/fonts"
+import { getLocale, getLocaleDir } from "@/lib/get-locale"
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
@@ -44,9 +45,12 @@ export const viewport: Viewport = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = getLocale()
+  const dir = getLocaleDir(locale)
+
   return (
     <ClerkProvider>
-      <html lang="en" className={fontSans.variable}>
+      <html lang={locale} dir={dir} className={fontSans.variable}>
         <body className="flex min-h-screen flex-col">
           {children}
           <Toaster />

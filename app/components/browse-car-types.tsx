@@ -3,6 +3,8 @@ import Link from "next/link"
 import { carTypes } from "@/data/car-types"
 
 import { SearchParams } from "@/lib/types"
+import { getLocale } from "@/lib/get-locale"
+import { getTranslations } from "@/lib/i18n"
 import { Button } from "@/components/ui/button"
 import {
   Carousel,
@@ -13,11 +15,14 @@ import {
 } from "@/components/ui/carousel"
 
 export function BrowseCarTypes() {
+  const locale = getLocale()
+  const { home } = getTranslations(locale)
+
   return (
     <section>
       <div className="mx-auto w-full max-w-none px-5 sm:max-w-[90%] sm:px-0 2xl:max-w-8xl">
         <h2 className="text-balance text-[19px] font-bold sm:text-[21px] lg:text-[23px]">
-          Browse by Car Type
+          {home.browseCarTypesTitle}
         </h2>
         <div className="pt-6">
           <div className="relative">
@@ -25,7 +30,9 @@ export function BrowseCarTypes() {
             <div className="after:pointer-events-none after:absolute after:right-0 after:top-0 after:z-10 after:h-full after:w-[7%] after:bg-gradient-to-l after:from-white after:content-[''] lg:after:-right-5"></div>
             <Carousel>
               <CarouselContent className="m-0 space-x-3 sm:space-x-4">
-                {carTypes.map(({ id, slug, name, imageUrl }) => {
+                {carTypes.map(({ id, slug, name, nameAr, nameTr, imageUrl }) => {
+                  const localizedName =
+                    locale === "ar" ? nameAr : locale === "tr" ? nameTr : name
                   return (
                     <CarouselItem
                       key={id}
@@ -48,11 +55,11 @@ export function BrowseCarTypes() {
                       </Button>
                       <div className="relative aspect-video">
                         <span className="absolute left-2 top-2 z-10 inline-flex items-center justify-center rounded-2xl border border-neutral-200 bg-white px-2 py-1 text-[12px] font-semibold leading-none tracking-wide sm:px-3 sm:py-1.5 sm:text-[13px] md:left-2.5 md:top-2.5 md:tracking-normal lg:py-2 lg:text-[14px]">
-                          {name}
+                          {localizedName}
                         </span>
                         <Image
                           src={imageUrl}
-                          alt={name}
+                          alt={localizedName}
                           loading="lazy"
                           fill
                           sizes="(max-width: 550px) 50vw, (max-width: 950px) 33vw, (max-width: 1280px) 25vw, 20vw"

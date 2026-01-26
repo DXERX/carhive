@@ -1,6 +1,8 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getCarBySlug, getCars } from "@/db/queries/car-repository"
+import { getLocale } from "@/lib/get-locale"
+import { getTranslations } from "@/lib/i18n"
 
 import { Separator } from "@/components/ui/separator"
 import CldImage from "@/components/cld-image"
@@ -42,6 +44,29 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
     notFound()
   }
 
+  const locale = getLocale()
+  const { carDetails, cars } = getTranslations(locale)
+  const powertrainKey = car.powertrain.toLowerCase() as keyof typeof cars.powertrainLabels
+  const transmissionKey = car.transmission.toLowerCase() as keyof typeof cars.transmissionLabels
+  const localizedName =
+    locale === "ar"
+      ? (car as any).nameAr ?? car.name
+      : locale === "tr"
+        ? (car as any).nameTr ?? car.name
+        : car.name
+  const localizedDescription =
+    locale === "ar"
+      ? (car as any).descriptionAr ?? car.description
+      : locale === "tr"
+        ? (car as any).descriptionTr ?? car.description
+        : car.description
+  const localizedFeatures =
+    locale === "ar"
+      ? (car as any).featuresAr ?? car.features
+      : locale === "tr"
+        ? (car as any).featuresTr ?? car.features
+        : car.features
+
   return (
     <main
       className="[--content-padding-y:32px] [--reserve-card-width:370px] md:[--content-padding-y:56px]"
@@ -54,14 +79,14 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
     >
       <div className="mx-auto w-full max-w-none p-0 md:max-w-[90%] xl:max-w-6xl">
         <div className="hidden md:block md:pt-8">
-          <h1 className="text-balance text-2xl font-semibold">{car.name}</h1>
+          <h1 className="text-balance text-2xl font-semibold">{localizedName}</h1>
         </div>
         <div className="md:pt-4">
           <div className="grid h-80 grid-cols-1 grid-rows-1 gap-3 md:h-[34rem] md:grid-cols-4 md:grid-rows-2">
             <div className="relative overflow-hidden md:col-span-3 md:row-span-2 md:rounded-l-2xl">
               <CldImage
                 src={`carhive/cars/car-interior_d6nmyn`}
-                alt="car interior"
+                alt={carDetails.imageInterior}
                 priority
                 fill
                 sizes="66vw"
@@ -71,7 +96,7 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
             <div className="relative col-span-1 row-span-1 hidden overflow-hidden rounded-tr-2xl md:block">
               <CldImage
                 src={`carhive/cars/car-door-panel_puxkbc`}
-                alt="car door panel"
+                alt={carDetails.imageDoorPanel}
                 priority
                 fill
                 sizes="33vw"
@@ -81,7 +106,7 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
             <div className="relative col-span-1 row-span-1 hidden overflow-hidden rounded-br-2xl md:block">
               <CldImage
                 src={`carhive/cars/car-seat_rnzgv6`}
-                alt="car seat"
+                alt={carDetails.imageSeat}
                 priority
                 fill
                 sizes="33vw"
@@ -96,17 +121,17 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
         <div className="mx-auto w-full max-w-none px-5 sm:max-w-[90%] sm:px-0 xl:max-w-6xl">
           <div className="grid w-full grid-cols-1 gap-24 md:grid-cols-[1fr_auto]">
             <div className="text-balance">
-              <h1 className="text-2xl font-semibold md:hidden">{car.name}</h1>
+              <h1 className="text-2xl font-semibold md:hidden">{localizedName}</h1>
               <div className="flex flex-wrap items-center gap-1 text-[13px] capitalize text-neutral-800 lg:text-[15px]">
-                <span>{car.seats} seats</span>
+                <span>{carDetails.seats.replace("{count}", String(car.seats))}</span>
                 <span className="text-xl">·</span>
-                <span>{car.powertrain}</span>
+                <span>{cars.powertrainLabels[powertrainKey] ?? car.powertrain}</span>
                 <span className="text-xl">·</span>
-                <span>{car.transmission}</span>
+                <span>{cars.transmissionLabels[transmissionKey] ?? car.transmission}</span>
                 {car.unlimitedMileage && (
                   <>
                     <span className="text-xl">·</span>
-                    <span>Unlimited mileage</span>
+                    <span>{carDetails.unlimitedMileage}</span>
                   </>
                 )}
               </div>
@@ -119,7 +144,7 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
                   <span className="text-xl">·</span>
                   {Number(car.reviewCount) > 0 && (
                     <span className="text-neutral-800">
-                      {car.reviewCount} reviews
+                      {carDetails.reviews.replace("{count}", String(car.reviewCount))}
                     </span>
                   )}
                 </div>
@@ -131,42 +156,36 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
                 <div className="flex flex-row gap-8">
                   <NavigationIcon className="size-6 shrink-0" />
                   <div className="flex flex-col">
-                    <p className="font-semibold">Onboard Navigation System</p>
+                    <p className="font-semibold">{carDetails.amenities[0]?.title}</p>
                     <p className="mt-0.5 text-[14px] leading-5 text-neutral-600">
-                      A car equipped with a GPS navigation system to help you
-                      find your way with ease.
+                      {carDetails.amenities[0]?.description}
                     </p>
                   </div>
                 </div>
                 <div className="flex flex-row gap-8">
                   <HeadsetIcon className="size-6 shrink-0" />
                   <div className="flex flex-col">
-                    <p className="font-semibold">24/7 Roadside Assistance</p>
+                    <p className="font-semibold">{carDetails.amenities[1]?.title}</p>
                     <p className="mt-0.5 text-[14px] leading-5 text-neutral-600">
-                      Access to round-the-clock roadside support for any
-                      emergencies or breakdowns.
+                      {carDetails.amenities[1]?.description}
                     </p>
                   </div>
                 </div>
                 <div className="flex flex-row gap-8">
                   <WifiIcon className="size-6 shrink-0" />
                   <div className="flex flex-col">
-                    <p className="font-semibold">Free Wi-Fi in the Car</p>
+                    <p className="font-semibold">{carDetails.amenities[2]?.title}</p>
                     <p className="mt-0.5 text-[14px] leading-5 text-neutral-600">
-                      Enjoy complimentary Wi-Fi access during your drive to stay
-                      connected on the go.
+                      {carDetails.amenities[2]?.description}
                     </p>
                   </div>
                 </div>
                 <div className="flex flex-row gap-8">
                   <KidIcon className="size-6 shrink-0" />
                   <div className="flex flex-col">
-                    <p className="font-semibold">
-                      Child Safety Seats Available
-                    </p>
+                    <p className="font-semibold">{carDetails.amenities[3]?.title}</p>
                     <p className="mt-0.5 text-[14px] leading-5 text-neutral-600">
-                      Optional child safety seats are available to ensure the
-                      safety of your little ones.
+                      {carDetails.amenities[3]?.description}
                     </p>
                   </div>
                 </div>
@@ -175,17 +194,17 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
               <Separator className="my-10" />
 
               <div className="mt-10 space-y-6">
-                <p className="text-neutral-800">{car.description}</p>
+                <p className="text-neutral-800">{localizedDescription}</p>
               </div>
 
               <Separator className="my-12" />
 
               <h2 className="text-lg font-semibold lg:text-xl">
-                What this car offers
+                {carDetails.offersTitle}
               </h2>
               <div className="pt-8">
                 <div className="grid grid-cols-2 gap-4">
-                  {car.features.map((feature: any) => (
+                  {localizedFeatures.map((feature: any) => (
                     <div
                       key={feature}
                       className="flex flex-row items-center gap-4"

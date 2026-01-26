@@ -15,6 +15,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { FiltersIcon } from "@/components/icons/filters"
 import { ResponsiveModal } from "@/components/responsive-modal"
+import { useLocale } from "@/hooks/use-locale"
+import { getTranslations } from "@/lib/i18n"
 
 import { FiltersContent } from "./filters-content"
 import {
@@ -38,6 +40,8 @@ export function FiltersButton({
   const searchParams = useSearchParams()
   const router = useRouter()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const { locale } = useLocale()
+  const { cars } = getTranslations(locale)
 
   const initialFilters = useMemo(
     () =>
@@ -114,23 +118,23 @@ export function FiltersButton({
         )}
       >
         <FiltersIcon className="size-5" />
-        <span>Filters</span>
+        <span>{cars.filters}</span>
         {badge}
       </Button>
     )
-  }, [trigger, totalSelectedFilters])
+  }, [trigger, totalSelectedFilters, cars])
 
   return (
     <ResponsiveModal
       open={isModalOpen}
       onOpenChange={setIsModalOpen}
-      title="Filters"
-      description="Refine your search by adjusting the filters below to find your perfect match."
+      title={cars.filters}
+      description={cars.filtersDescription}
       trigger={triggerWithBadge}
       footer={
         <div className="flex w-full items-center justify-between gap-x-2 px-6">
-          <ResetFiltersButton onReset={handleFiltersReset} />
-          <ApplyFiltersButton onApply={handleFiltersApply} />
+          <ResetFiltersButton onReset={handleFiltersReset} label={cars.clearAll} />
+          <ApplyFiltersButton onApply={handleFiltersApply} label={cars.showCars} />
         </div>
       }
     >
@@ -144,22 +148,34 @@ export function FiltersButton({
   )
 }
 
-export function ApplyFiltersButton({ onApply }: { onApply: () => void }) {
+export function ApplyFiltersButton({
+  onApply,
+  label,
+}: {
+  onApply: () => void
+  label: string
+}) {
   return (
     <Button size="lg" className="text-[16px]" onClick={onApply}>
-      Show cars
+      {label}
     </Button>
   )
 }
 
-export function ResetFiltersButton({ onReset }: { onReset: () => void }) {
+export function ResetFiltersButton({
+  onReset,
+  label,
+}: {
+  onReset: () => void
+  label: string
+}) {
   return (
     <Button
       variant="ghost"
       className="-ml-2.5 px-2.5 text-[16px]"
       onClick={onReset}
     >
-      Clear all
+      {label}
     </Button>
   )
 }

@@ -10,6 +10,8 @@ import { useDebounce } from "@/hooks/use-debounce"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
+import { useLocale } from "@/hooks/use-locale"
+import { getTranslations } from "@/lib/i18n"
 
 import { SelectedFilters } from "../types"
 
@@ -26,6 +28,9 @@ export function PriceRangeFilters({
   selectedFilters,
   setSelectedFilters,
 }: PriceRangeFiltersProps) {
+  const { locale } = useLocale()
+  const { cars } = getTranslations(locale)
+
   const [tempMinPrice, setTempMinPrice] = useState(
     selectedFilters.minPrice || MIN_PRICE
   )
@@ -102,11 +107,9 @@ export function PriceRangeFilters({
 
   return (
     <section>
-      <h3 className="text-lg font-semibold">Price range</h3>
+      <h3 className="text-lg font-semibold">{cars.priceRange}</h3>
       <div className="pt-0.5">
-        <p className="text-[15px] text-neutral-700">
-          Daily prices before fees and taxes
-        </p>
+        <p className="text-[15px] text-neutral-700">{cars.dailyPrices}</p>
       </div>
       <div className="pt-10">
         <Slider
@@ -122,7 +125,7 @@ export function PriceRangeFilters({
           <div className="flex items-center justify-between">
             <div className="flex flex-col items-center gap-2.5">
               <Label htmlFor="price_filter_min" className="text-neutral-600">
-                Minimum
+                {cars.minimum}
               </Label>
               <Input
                 id="price_filter_min"
@@ -135,7 +138,7 @@ export function PriceRangeFilters({
             </div>
             <div className="flex flex-col items-center gap-2.5">
               <Label htmlFor="price_filter_max" className="text-neutral-600">
-                Maximum
+                {cars.maximum}
               </Label>
               <Input
                 id="price_filter_max"

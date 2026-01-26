@@ -7,6 +7,8 @@ import { MinivanIcon } from "@/components/icons/minivan"
 import { RoadsterIcon } from "@/components/icons/roadster"
 import { SUVIcon } from "@/components/icons/suv"
 import { TruckIcon } from "@/components/icons/truck"
+import { useLocale } from "@/hooks/use-locale"
+import { getTranslations } from "@/lib/i18n"
 
 import { BodyStyle, SelectedFilters } from "../types"
 
@@ -44,6 +46,9 @@ export function BodyStyleFilters({
   selectedFilters,
   setSelectedFilters,
 }: BodyStyleFiltersProps) {
+  const { locale } = useLocale()
+  const { cars } = getTranslations(locale)
+
   const handleBodyStyleToggle = (bodyStyle: BodyStyle) => {
     setSelectedFilters((prevFilters) => {
       const bodyStylesSelected = prevFilters.bodyStyles.includes(bodyStyle)
@@ -56,7 +61,7 @@ export function BodyStyleFilters({
 
   return (
     <section>
-      <h3 className="text-lg font-semibold">Body Style</h3>
+      <h3 className="text-lg font-semibold">{cars.bodyStyle}</h3>
       <div className="pt-6">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-3.5">
           {bodyStyles.map(({ slug, name, icon: Icon }) => (
@@ -69,7 +74,7 @@ export function BodyStyleFilters({
             >
               <Icon className="mr-2.5 size-7" />
               <span className="text-sm font-normal text-neutral-950">
-                {name}
+                {cars.bodyStyleLabels[slug] ?? name}
               </span>
             </Toggle>
           ))}

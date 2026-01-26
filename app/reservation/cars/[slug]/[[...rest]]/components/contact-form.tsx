@@ -11,6 +11,8 @@ import { CheckIcon } from "@/components/icons/check"
 import { CurrencyDollarIcon } from "@/components/icons/currency-dollar"
 import { HeadsetIcon } from "@/components/icons/headset"
 import { createBookingAction } from "../actions"
+import { useLocale } from "@/hooks/use-locale"
+import { getTranslations } from "@/lib/i18n"
 
 interface ContactFormProps {
   carSlug: string
@@ -34,6 +36,8 @@ export function ContactForm({
   const { toast } = useToast()
   const router = useRouter()
   const { isSignedIn } = useAuth()
+  const { locale } = useLocale()
+  const { reservation } = getTranslations(locale)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
     fullName: "",
@@ -65,8 +69,8 @@ export function ContactForm({
       // Check if result exists and has the expected structure
       if (!result) {
         toast({
-          title: "Error",
-          description: "Failed to create booking. Please try again.",
+          title: reservation.error,
+          description: reservation.failedToCreateBooking,
           variant: "destructive",
         })
         return
@@ -74,8 +78,8 @@ export function ContactForm({
 
       if (result.success) {
         toast({
-          title: "Reservation Request Sent! ✅",
-          description: result.message || "We will contact you shortly to confirm your booking.",
+          title: reservation.reservationRequestSent,
+          description: result.message || reservation.contactSoon,
         })
         
         // Redirect based on authentication status
@@ -94,16 +98,16 @@ export function ContactForm({
         }, 1000)
       } else {
         toast({
-          title: "Error",
-          description: result.error || "Failed to create booking. Please try again.",
+          title: reservation.error,
+          description: result.error || reservation.failedToCreateBooking,
           variant: "destructive",
         })
       }
     } catch (error) {
       console.error("Booking error:", error)
       toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
+        title: reservation.error,
+        description: reservation.somethingWentWrong,
         variant: "destructive",
       })
     } finally {
@@ -122,10 +126,10 @@ export function ContactForm({
 
   return (
     <div>
-      <h2 className="mb-6 text-xl font-semibold">Contact Information</h2>
+      <h2 className="mb-6 text-xl font-semibold">{reservation.contactInformation}</h2>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <Label htmlFor="fullName">Full Name *</Label>
+          <Label htmlFor="fullName">{reservation.fullName} *</Label>
           <Input
             id="fullName"
             name="fullName"
@@ -133,13 +137,13 @@ export function ContactForm({
             required
             value={formData.fullName}
             onChange={handleChange}
-            placeholder="Enter your full name"
+            placeholder={reservation.fullNamePlaceholder}
             className="mt-2"
           />
         </div>
 
         <div>
-          <Label htmlFor="email">Email *</Label>
+          <Label htmlFor="email">{reservation.email} *</Label>
           <Input
             id="email"
             name="email"
@@ -147,13 +151,13 @@ export function ContactForm({
             required
             value={formData.email}
             onChange={handleChange}
-            placeholder="your.email@example.com"
+            placeholder={reservation.emailPlaceholder}
             className="mt-2"
           />
         </div>
 
         <div>
-          <Label htmlFor="phone">Phone Number *</Label>
+          <Label htmlFor="phone">{reservation.phone} *</Label>
           <Input
             id="phone"
             name="phone"
@@ -161,32 +165,32 @@ export function ContactForm({
             required
             value={formData.phone}
             onChange={handleChange}
-            placeholder="+90 XXX XXX XX XX"
+            placeholder={reservation.phonePlaceholder}
             className="mt-2"
           />
         </div>
 
         <div>
-          <Label htmlFor="whatsapp">WhatsApp Number</Label>
+          <Label htmlFor="whatsapp">{reservation.whatsapp}</Label>
           <Input
             id="whatsapp"
             name="whatsapp"
             type="tel"
             value={formData.whatsapp}
             onChange={handleChange}
-            placeholder="+90 XXX XXX XX XX (optional)"
+            placeholder={reservation.whatsappPlaceholder}
             className="mt-2"
           />
         </div>
 
         <div>
-          <Label htmlFor="notes">Additional Notes</Label>
+          <Label htmlFor="notes">{reservation.additionalNotes}</Label>
           <textarea
             id="notes"
             name="notes"
             value={formData.notes}
             onChange={handleChange}
-            placeholder="Any special requests or questions..."
+            placeholder={reservation.notesPlaceholder}
             className="mt-2 flex min-h-[80px] w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           />
         </div>
@@ -194,16 +198,16 @@ export function ContactForm({
         <div className="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4">
           <p className="mb-2 flex items-center gap-2 text-sm text-blue-900">
             <CheckIcon className="size-4 text-green-600" />
-            <strong>No Credit Card Required</strong>
+            <strong>{reservation.noCreditCard}</strong>
           </p>
           <p className="space-y-1 text-sm text-blue-800">
             <span className="flex items-center gap-2">
               <CurrencyDollarIcon className="size-4" />
-              Cash payment available at pickup
+              {reservation.cashPayment}
             </span>
             <span className="flex items-center gap-2">
               <HeadsetIcon className="size-4" />
-              We'll contact you to confirm your booking
+              {reservation.confirmContact}
             </span>
           </p>
         </div>
@@ -213,11 +217,11 @@ export function ContactForm({
           disabled={isSubmitting}
           className="h-12 w-full text-base font-semibold"
         >
-          {isSubmitting ? "Sending Request..." : "Send Reservation Request"}
+          {isSubmitting ? reservation.sendingRequest : reservation.sendReservationRequest}
         </Button>
 
         <p className="mt-4 text-center text-xs text-neutral-500">
-          By submitting, you agree to our terms and privacy policy
+          {reservation.termsNotice}
         </p>
       </form>
     </div>

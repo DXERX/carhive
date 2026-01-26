@@ -3,6 +3,8 @@ import { Dispatch, SetStateAction } from "react"
 import { Toggle } from "@/components/ui/toggle"
 import { AutomaticGearboxIcon } from "@/components/icons/automatic-gearbox"
 import { ManualGearboxIcon } from "@/components/icons/manual-gearbox"
+import { useLocale } from "@/hooks/use-locale"
+import { getTranslations } from "@/lib/i18n"
 
 import { SelectedFilters, Transmission } from "../types"
 
@@ -28,6 +30,9 @@ export function TransmissionTypeFilters({
   selectedFilters,
   setSelectedFilters,
 }: TransmissionTypeFiltersProps) {
+  const { locale } = useLocale()
+  const { cars } = getTranslations(locale)
+
   const handleTransmissionToggle = (transmission: Transmission) => {
     setSelectedFilters((prevFilters) => {
       const transmissionsSelected = prevFilters.transmissions.includes(
@@ -44,7 +49,7 @@ export function TransmissionTypeFilters({
 
   return (
     <section>
-      <h3 className="text-lg font-semibold">Transmission</h3>
+      <h3 className="text-lg font-semibold">{cars.transmission}</h3>
       <div className="pt-6">
         <div className="flex flex-wrap items-center gap-x-2.5 gap-y-3">
           {transmissions.map(({ slug, name, icon: Icon }) => (
@@ -57,7 +62,7 @@ export function TransmissionTypeFilters({
             >
               <Icon className="mr-2.5 size-7 [stroke-width:1.5]" />
               <span className="text-sm font-normal text-neutral-950">
-                {name}
+                {cars.transmissionLabels[slug] ?? name}
               </span>
             </Toggle>
           ))}

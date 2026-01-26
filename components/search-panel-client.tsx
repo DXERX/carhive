@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { SearchPanel } from "./search-panel"
+import { useLocale } from "@/hooks/use-locale"
+import { getTranslations } from "@/lib/i18n"
 
 type Location = {
   id: number
@@ -12,6 +14,8 @@ type Location = {
 }
 
 export function SearchPanelClient(props: any) {
+  const { locale } = useLocale()
+  const { home } = getTranslations(locale)
   const [locations, setLocations] = useState<Location[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -39,5 +43,21 @@ export function SearchPanelClient(props: any) {
 
   if (!locations.length) return null
 
-  return <SearchPanel locations={locations} {...props} />
+  const localizedLocations = locations.map((location: any) => {
+    const localizedName =
+      locale === "ar"
+        ? location.nameAr ?? location.name
+        : locale === "tr"
+          ? location.nameTr ?? location.name
+          : location.name
+
+    return {
+      ...location,
+      name: localizedName,
+    }
+  })
+
+  return (
+    <SearchPanel locations={localizedLocations} labels={home.search} {...props} />
+  )
 }

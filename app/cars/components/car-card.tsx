@@ -1,6 +1,8 @@
 import { SelectCar } from "@/db/schema"
 
 import { formatAmountForDisplay } from "@/lib/utils"
+import { getLocale } from "@/lib/get-locale"
+import { getTranslations } from "@/lib/i18n"
 import CldImage from "@/components/cld-image"
 import { AutomaticGearboxIcon } from "@/components/icons/automatic-gearbox"
 import { BatteryAutomotiveIcon } from "@/components/icons/battery-automotive"
@@ -19,12 +21,25 @@ export async function CarCard({ car }: CarCardProps) {
     return null
   }
 
+  const locale = getLocale()
+  const { cars } = getTranslations(locale)
+
+  const localizedName =
+    locale === "ar"
+      ? (car as any).nameAr ?? car.name
+      : locale === "tr"
+        ? (car as any).nameTr ?? car.name
+        : car.name
+
+  const powertrainKey = car.powertrain.toLowerCase() as keyof typeof cars.powertrainLabels
+  const transmissionKey = car.transmission.toLowerCase() as keyof typeof cars.transmissionLabels
+
   return (
     <article className="overflow-hidden rounded-[10px] border border-black/[0.08] bg-white text-sm shadow-sm">
       <div className="relative aspect-video h-40 w-full">
         <CldImage
           src={car.imageUrl}
-          alt={car.name}
+          alt={localizedName}
           fill
           className="object-cover"
           sizes="(max-width: 569px) 100vw, (max-width: 840px) 50vw, (max-width: 949px) 33vw, (max-width: 1036px) 60vw, (max-width: 1336px) 30vw, 300px"
@@ -33,7 +48,7 @@ export async function CarCard({ car }: CarCardProps) {
       </div>
       <div className="flex flex-col gap-1.5 p-5">
         <div className="flex items-center justify-between gap-1">
-          <span className="truncate font-semibold">{car.name}</span>
+          <span className="truncate font-semibold">{localizedName}</span>
           <div className="inline-flex shrink-0 items-center justify-center gap-x-1">
             <FilledStarIcon className="inline size-3 shrink-0 " />
             <span className="leading-none">
@@ -51,7 +66,7 @@ export async function CarCard({ car }: CarCardProps) {
             ) : (
               <EngineIcon className="mr-1.5 inline size-[14px] shrink-0" />
             )}
-            <span>{car.powertrain}</span>
+            <span>{cars.powertrainLabels[powertrainKey] ?? car.powertrain}</span>
           </div>
           <div className="flex items-center">
             {car.transmission.toLowerCase() === "automatic" ? (
@@ -59,7 +74,7 @@ export async function CarCard({ car }: CarCardProps) {
             ) : (
               <ManualGearboxIcon className="mr-1.5 inline size-[14px] shrink-0" />
             )}
-            <span>{car.transmission}</span>
+            <span>{cars.transmissionLabels[transmissionKey] ?? car.transmission}</span>
           </div>
         </div>
         <div className="pt-1">
@@ -70,7 +85,7 @@ export async function CarCard({ car }: CarCardProps) {
               true
             )}
           </span>
-          <span className="ml-1 leading-none text-neutral-900">day</span>
+          <span className="ml-1 leading-none text-neutral-900">{cars.perDay}</span>
         </div>
         <div className="pt-4">
           <CarDetailsButton carSlug={car.slug} />

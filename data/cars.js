@@ -1,4 +1,4 @@
-export const cars = [
+const baseCars = [
   {
     id: "6cdd6d3e-49f2-4c70-897b-81f3e3cb0c6a",
     slug: "hybrid-hatchback-basic",
@@ -735,3 +735,284 @@ export const cars = [
     metadata: {},
   },
 ]
+
+const carTranslations = {
+  "hybrid-hatchback-basic": {
+    nameAr: "هاتشباك هجينة أساسية",
+    nameTr: "Temel Hibrit Hatchback",
+    descriptionAr:
+      "هاتشباك هجينة أساسية توفر الكفاءة والعملية للاستخدام اليومي، مع تقنيات حديثة وقيادة مريحة للتنقل داخل المدينة.",
+    descriptionTr:
+      "Günlük kullanım için verimlilik ve pratiklik sunan temel hibrit hatchback; modern teknoloji ve şehir içi kullanım için konforlu sürüş sağlar.",
+  },
+  "gasoline-sedan-luxury": {
+    nameAr: "سيدان بنزين فاخرة",
+    nameTr: "Lüks Benzinli Sedan",
+    descriptionAr:
+      "سيدان بنزين فاخرة توفر تجربة قيادة راقية مع مزايا ممتازة وقيادة سلسة للمدينة والطرق السريعة.",
+    descriptionTr:
+      "Premium özelliklerle şık bir sürüş deneyimi sunan lüks benzinli sedan; şehir ve otoyol için yumuşak sürüş sağlar.",
+  },
+  "electric-sports-car-fast": {
+    nameAr: "سيارة رياضية سريعة كهربائية",
+    nameTr: "Hızlı Elektrikli Spor Araba",
+    descriptionAr:
+      "سيارة رياضية كهربائية مصممة للسرعة والأداء بتقنيات متقدمة وتصميم أنيق لتجربة قيادة مثيرة.",
+    descriptionTr:
+      "Hız ve performans için tasarlanmış elektrikli spor araba; gelişmiş teknoloji ve şık tasarımıyla heyecan verici bir sürüş sunar.",
+  },
+  "diesel-pickup-truck-rugged": {
+    nameAr: "بيك أب ديزل قوية",
+    nameTr: "Dayanıklı Dizel Pickup",
+    descriptionAr:
+      "بيك أب ديزل قوية للأعمال الشاقة والمغامرات الوعرة، بمتانة عالية وأداء قوي للمهام الصعبة.",
+    descriptionTr:
+      "Zorlu işler ve arazi maceraları için dayanıklı dizel pickup; yüksek dayanıklılık ve güçlü performans sunar.",
+  },
+  "hybrid-minivan-family": {
+    nameAr: "ميني فان هجينة عائلية",
+    nameTr: "Aile Hibrit Minivan",
+    descriptionAr:
+      "ميني فان هجينة مناسبة للعائلة توفر مساحة واسعة ومزايا متقدمة لتجربة سفر مريحة وصديقة للبيئة.",
+    descriptionTr:
+      "Aile dostu hibrit minivan; geniş alan ve gelişmiş özelliklerle konforlu ve çevre dostu bir yolculuk sunar.",
+  },
+  "electric-hatchback-compact": {
+    nameAr: "هاتشباك كهربائية مدمجة",
+    nameTr: "Kompakt Elektrikli Hatchback",
+    descriptionAr:
+      "هاتشباك كهربائية مدمجة مثالية للمدينة، تجمع بين كفاءة الطاقة والمزايا الحديثة وتصميم أنيق.",
+    descriptionTr:
+      "Şehir içi için ideal kompakt elektrikli hatchback; enerji verimliliği, modern özellikler ve şık tasarım sunar.",
+  },
+  "gasoline-suv-comfort": {
+    nameAr: "SUV بنزين مريحة",
+    nameTr: "Konforlu Benzinli SUV",
+    descriptionAr:
+      "SUV بنزين مريحة للرحلات العائلية والاستخدام اليومي، بمقصورة واسعة ومزايا حديثة لقيادة ممتعة.",
+    descriptionTr:
+      "Aile yolculukları ve günlük kullanım için konforlu benzinli SUV; ferah iç mekân ve modern donanımlar sunar.",
+  },
+  "diesel-sedan-economy": {
+    nameAr: "سيدان ديزل اقتصادية",
+    nameTr: "Ekonomik Dizel Sedan",
+    descriptionAr:
+      "سيدان ديزل اقتصادية بكفاءة وقود عالية وقيادة مريحة، مثالية للباحثين عن الاعتمادية والأداء بتكلفة مناسبة.",
+    descriptionTr:
+      "Yüksek yakıt verimliliğine sahip ekonomik dizel sedan; konforlu sürüşüyle bütçe dostu sürücüler için ideal.",
+  },
+  "electric-pickup-truck-flex": {
+    nameAr: "بيك أب كهربائية متعددة الاستخدامات",
+    nameTr: "Esnek Elektrikli Pickup",
+    descriptionAr:
+      "بيك أب كهربائية متعددة الاستخدام للعمل والترفيه، بمدى ممتاز ومتانة عالية وتصميم قوي.",
+    descriptionTr:
+      "İş ve günlük kullanım için çok yönlü elektrikli pickup; etkileyici menzil, dayanıklılık ve güçlü tasarım sunar.",
+  },
+  "hybrid-suv-adventure": {
+    nameAr: "SUV هجينة للمغامرات",
+    nameTr: "Macera Hibrit SUV",
+    descriptionAr:
+      "SUV هجينة جاهزة للمغامرات للمدينة والطرق الوعرة، تجمع بين الكفاءة والقوة والمزايا الحديثة.",
+    descriptionTr:
+      "Şehir ve arazi için maceraya hazır hibrit SUV; verimlilik, güç ve modern özelliklerin dengesi.",
+  },
+  "gasoline-hatchback-sporty": {
+    nameAr: "هاتشباك بنزين رياضية",
+    nameTr: "Sportif Benzinli Hatchback",
+    descriptionAr:
+      "هاتشباك بنزين رياضية للأداء وخفة الحركة، بتجربة قيادة ديناميكية ومزايا متقدمة لعشاق القيادة.",
+    descriptionTr:
+      "Performans ve çeviklik için tasarlanmış sportif benzinli hatchback; dinamik sürüş ve gelişmiş özellikler sunar.",
+  },
+  "electric-sedan-premium": {
+    nameAr: "سيدان كهربائية فاخرة",
+    nameTr: "Premium Elektrikli Sedan",
+    descriptionAr:
+      "سيدان كهربائية فاخرة بتقنيات متقدمة وقيادة سلسة دون انبعاثات، مع مزايا راقية لتجربة استثنائية.",
+    descriptionTr:
+      "Premium elektrikli sedan; gelişmiş teknoloji, sıfır emisyon ve üst düzey donanımla üstün sürüş sunar.",
+  },
+  "hybrid-sports-car-elite": {
+    nameAr: "سيارة رياضية هجينة نخبوية",
+    nameTr: "Seçkin Hibrit Spor Araba",
+    descriptionAr:
+      "سيارة رياضية هجينة نخبوية بأداء عالٍ وتقنية صديقة للبيئة، مع تصميم أنيق ومزايا متقدمة لتجربة مثيرة.",
+    descriptionTr:
+      "Yüksek performanslı seçkin hibrit spor araba; çevre dostu teknoloji, şık tasarım ve gelişmiş özellikler sunar.",
+  },
+  "gasoline-minivan-spacious": {
+    nameAr: "ميني فان بنزين واسعة",
+    nameTr: "Geniş Benzinli Minivan",
+    descriptionAr:
+      "ميني فان بنزين واسعة للعائلات الكبيرة، توفر مساحة وراحة ومزايا حديثة للرحلات الطويلة والاستخدام اليومي.",
+    descriptionTr:
+      "Geniş benzinli minivan; büyük aileler için bol alan, konfor ve modern özellikler sunar.",
+  },
+  "electric-hatchback-sleek": {
+    nameAr: "هاتشباك كهربائية أنيقة",
+    nameTr: "Şık Elektrikli Hatchback",
+    descriptionAr:
+      "هاتشباك كهربائية أنيقة بتصميم حديث وتقنيات متقدمة، تقدم قيادة فعّالة وأسلوبًا مستدامًا.",
+    descriptionTr:
+      "Modern tasarımlı şık elektrikli hatchback; ileri teknolojiyle verimli ve sürdürülebilir bir sürüş sunar.",
+  },
+  "diesel-sports-car-racing": {
+    nameAr: "سيارة رياضية ديزل للسباقات",
+    nameTr: "Yarış Dizel Spor Araba",
+    descriptionAr:
+      "سيارة رياضية ديزل عالية الأداء لعشاق السرعة، بمحرك قوي وقدرات تحكم متقدمة لقيادة مثيرة.",
+    descriptionTr:
+      "Yarış tutkunları için yüksek performanslı dizel spor araba; güçlü motor ve gelişmiş yol tutuşu sunar.",
+  },
+  "hybrid-sedan-standard": {
+    nameAr: "سيدان هجينة قياسية",
+    nameTr: "Standart Hibrit Sedan",
+    descriptionAr:
+      "سيدان هجينة قياسية توازن بين الكفاءة والراحة، مجهزة بمزايا حديثة للاستخدام اليومي.",
+    descriptionTr:
+      "Standart hibrit sedan; verimlilik ve konforu dengeler, günlük kullanım için modern donanım sunar.",
+  },
+  "gasoline-pickup-truck-work": {
+    nameAr: "بيك أب بنزين للعمل",
+    nameTr: "İş Benzinli Pickup",
+    descriptionAr:
+      "بيك أب بنزين موثوقة للعمل والاستخدام العملي، ببنية قوية ومزايا أساسية للمهام الثقيلة والنقل.",
+    descriptionTr:
+      "İş ve kullanım için güvenilir benzinli pickup; sağlam yapı ve ağır işlere uygun temel özellikler sunar.",
+  },
+  "electric-sports-car-elite": {
+    nameAr: "سيارة رياضية كهربائية نخبوية",
+    nameTr: "Seçkin Elektrikli Spor Araba",
+    descriptionAr:
+      "سيارة رياضية كهربائية نخبوية بأداء استثنائي وتقنية متطورة، مع تصميم أنيق ومزايا فاخرة لتجربة فريدة.",
+    descriptionTr:
+      "Üst düzey elektrikli spor araba; üstün performans, ileri teknoloji ve premium donanım sunar.",
+  },
+  "gasoline-suv-adventure": {
+    nameAr: "SUV بنزين للمغامرات",
+    nameTr: "Macera Benzinli SUV",
+    descriptionAr:
+      "SUV بنزين متعددة الاستخدام للمغامرات، تجمع بين الرحابة والقوة والمزايا المتقدمة للطرق العادية والوعرة.",
+    descriptionTr:
+      "Macera için çok yönlü benzinli SUV; genişlik, güç ve ileri özelliklerle hem yolda hem arazide keyif sunar.",
+  },
+  "hybrid-pickup-truck-utility": {
+    nameAr: "بيك أب هجينة عملية",
+    nameTr: "Hibrit İş Pickup",
+    descriptionAr:
+      "بيك أب هجينة عملية للكفاءة والمهام اليومية، بمحرك هجين قوي ومزايا أساسية للعمل.",
+    descriptionTr:
+      "Verimlilik odaklı hibrit pickup; güçlü hibrit motor ve iş için gerekli özellikler sunar.",
+  },
+  "gasoline-sedan-comfort": {
+    nameAr: "سيدان بنزين مريحة",
+    nameTr: "Konforlu Benzinli Sedan",
+    descriptionAr:
+      "سيدان بنزين مريحة للتنقل اليومي والرحلات الطويلة، بقيادة سلسة ومزايا حديثة.",
+    descriptionTr:
+      "Günlük kullanım ve uzun yol için konforlu benzinli sedan; yumuşak sürüş ve modern donanımlar sunar.",
+  },
+  "electric-minivan-premium": {
+    nameAr: "ميني فان كهربائية فاخرة",
+    nameTr: "Premium Elektrikli Minivan",
+    descriptionAr:
+      "ميني فان كهربائية فاخرة تجمع بين الرحابة والتقنية المتقدمة، بقيادة هادئة وكفاءة عالية للعائلات.",
+    descriptionTr:
+      "Premium elektrikli minivan; genişlik, ileri teknoloji ve sessiz-verimli sürüşü aileler için sunar.",
+  },
+  "diesel-suv-heavy-duty": {
+    nameAr: "SUV ديزل ثقيلة التحمل",
+    nameTr: "Ağır Hizmet Dizel SUV",
+    descriptionAr:
+      "SUV ديزل ثقيلة التحمل للطرق الوعرة والمهام الصعبة، بأداء قوي وقدرات دفع متقدمة.",
+    descriptionTr:
+      "Zorlu arazi ve ağır işlere uygun dizel SUV; güçlü performans ve ileri arazi kabiliyeti sunar.",
+  },
+  "hybrid-suv-family": {
+    nameAr: "SUV هجينة عائلية",
+    nameTr: "Aile Hibrit SUV",
+    descriptionAr:
+      "SUV هجينة مناسبة للعائلة بمقاعد واسعة وتقنية صديقة للبيئة، تجمع بين الراحة والكفاءة للرحلات العائلية.",
+    descriptionTr:
+      "Aile dostu hibrit SUV; geniş oturma alanı ve çevreci teknolojiyle konfor ve verimlilik sunar.",
+  },
+  "gasoline-sports-car-compact": {
+    nameAr: "سيارة رياضية بنزين مدمجة",
+    nameTr: "Kompakt Benzinli Spor Araba",
+    descriptionAr:
+      "سيارة رياضية بنزين مدمجة للرشاقة والسرعة، بتصميم أنيق ومزايا متقدمة لتجربة قيادة ديناميكية.",
+    descriptionTr:
+      "Çevik ve hızlı kompakt benzinli spor araba; şık tasarım ve gelişmiş özelliklerle dinamik sürüş sunar.",
+  },
+  "electric-sedan-luxury": {
+    nameAr: "سيدان كهربائية فاخرة",
+    nameTr: "Lüks Elektrikli Sedan",
+    descriptionAr:
+      "سيدان كهربائية فاخرة بأداء ممتاز وتقنيات متقدمة، توفر تجربة قيادة راقية وصديقة للبيئة.",
+    descriptionTr:
+      "Lüks elektrikli sedan; üstün performans ve ileri teknolojiyle rafine, çevre dostu sürüş sunar.",
+  },
+  "diesel-pickup-truck-heavy-duty": {
+    nameAr: "بيك أب ديزل ثقيلة التحمل",
+    nameTr: "Ağır Hizmet Dizel Pickup",
+    descriptionAr:
+      "بيك أب ديزل ثقيلة التحمل للمهام الصعبة والطرق الوعرة، بقوة استثنائية ومتانة عالية.",
+    descriptionTr:
+      "Zorlu işler ve arazi için ağır hizmet dizel pickup; yüksek güç ve dayanıklılık sunar.",
+  },
+}
+
+const featureTranslations = {
+  ar: {
+    "Adaptive Cruise Control": "مثبت سرعة متكيف",
+    "All-Terrain Tires": "إطارات لجميع التضاريس",
+    "Apple CarPlay": "Apple CarPlay",
+    "Backup Camera": "كاميرا خلفية",
+    "Bluetooth Connectivity": "اتصال بلوتوث",
+    "Heated Seats": "مقاعد مدفأة",
+    "Keyless Entry": "دخول بدون مفتاح",
+    "Leather Seats": "مقاعد جلدية",
+    "Navigation System": "نظام ملاحة",
+    "Power Sliding Doors": "أبواب منزلقة كهربائية",
+    "Power Tailgate": "باب خلفي كهربائي",
+    "Rear Sliding Doors": "أبواب منزلقة خلفية",
+    "Rearview Camera": "كاميرا الرؤية الخلفية",
+    "Sport Mode": "وضع رياضي",
+    "Tow Package": "حزمة سحب",
+  },
+  tr: {
+    "Adaptive Cruise Control": "Adaptif Hız Sabitleyici",
+    "All-Terrain Tires": "Arazi Lastikleri",
+    "Apple CarPlay": "Apple CarPlay",
+    "Backup Camera": "Geri Görüş Kamerası",
+    "Bluetooth Connectivity": "Bluetooth Bağlantısı",
+    "Heated Seats": "Isıtmalı Koltuklar",
+    "Keyless Entry": "Anahtarsız Giriş",
+    "Leather Seats": "Deri Koltuklar",
+    "Navigation System": "Navigasyon Sistemi",
+    "Power Sliding Doors": "Elektrikli Sürgülü Kapılar",
+    "Power Tailgate": "Elektrikli Bagaj Kapağı",
+    "Rear Sliding Doors": "Arka Sürgülü Kapılar",
+    "Rearview Camera": "Geri Görüş Kamerası",
+    "Sport Mode": "Spor Modu",
+    "Tow Package": "Çeki Paketi",
+  },
+}
+
+const translateFeatures = (features, locale) =>
+  features.map((feature) => featureTranslations[locale]?.[feature] ?? feature)
+
+export const cars = baseCars.map((car) => {
+  const translation = carTranslations[car.slug] ?? {}
+
+  return {
+    ...car,
+    nameAr: translation.nameAr ?? car.name,
+    nameTr: translation.nameTr ?? car.name,
+    descriptionAr: translation.descriptionAr ?? car.description,
+    descriptionTr: translation.descriptionTr ?? car.description,
+    featuresAr: translateFeatures(car.features, "ar"),
+    featuresTr: translateFeatures(car.features, "tr"),
+  }
+})

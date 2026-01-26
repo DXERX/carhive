@@ -1,5 +1,7 @@
 import { formatAmountForDisplay } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
+import { getLocale } from "@/lib/get-locale"
+import { getTranslations } from "@/lib/i18n"
 
 export function PriceDetails({
   days,
@@ -12,24 +14,27 @@ export function PriceDetails({
   subtotal: number
   taxes: number
 }) {
+  const locale = getLocale()
+  const { reservation } = getTranslations(locale)
+
   return (
     <>
-      <h2 className="text-xl font-semibold">Your total</h2>
+      <h2 className="text-xl font-semibold">{reservation.yourTotal}</h2>
       <div className="pt-5">
         <div className="grid grid-cols-1 gap-3">
           <div className="flex flex-row items-center justify-between text-[15px]">
             <span>
-              {days} {days === 1 ? "day" : "days"}
+              {days} {days === 1 ? reservation.day : reservation.days}
             </span>
             <span>{formatAmountForDisplay(subtotal, currency)}</span>
           </div>
           <div className="flex flex-row items-center justify-between text-[15px]">
-            <span>Taxes</span>
+            <span>{reservation.taxes}</span>
             <span>{formatAmountForDisplay(taxes, currency)}</span>
           </div>
           <Separator className="my-3" />
           <div className="flex flex-row items-center justify-between">
-            <strong>Total ({currency.toUpperCase()})</strong>
+            <strong>{reservation.total} ({currency.toUpperCase()})</strong>
             <strong>
               {formatAmountForDisplay(subtotal + taxes, currency)}
             </strong>

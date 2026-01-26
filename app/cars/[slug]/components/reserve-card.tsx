@@ -15,6 +15,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { useLocale } from "@/hooks/use-locale"
+import { getTranslations } from "@/lib/i18n"
 
 interface ReserveCardProps {
   car: SelectCar
@@ -24,6 +26,8 @@ export function ReserveCard({ car }: ReserveCardProps) {
   const { push } = useRouter()
   const searchParams = useSearchParams()
   const [date, setDate] = useState<DateRange | undefined>(undefined)
+  const { locale } = useLocale()
+  const { reserveCard } = getTranslations(locale)
 
   useEffect(() => {
     const checkinParam = searchParams.get(SearchParams.CHECKIN)
@@ -82,11 +86,11 @@ export function ReserveCard({ car }: ReserveCardProps) {
                 : formatAmountForDisplay(Number(car.pricePerDay), car.currency)}
             </span>
             <span className="text-[14px] text-neutral-800">
-              Total before taxes
+              {reserveCard.totalBeforeTaxes}
             </span>
           </>
         ) : (
-          <span className="text-xl font-medium">Add dates for prices</span>
+          <span className="text-xl font-medium">{reserveCard.addDatesForPrices}</span>
         )}
         <div className="pt-6">
           <div className={"grid gap-2"}>
@@ -103,22 +107,22 @@ export function ReserveCard({ car }: ReserveCardProps) {
                   <div className="grid w-full grid-cols-2">
                     <div className="flex flex-col border-r border-neutral-400 px-3 py-2">
                       <span className="text-[13px] font-medium text-black">
-                        Check in
+                        {reserveCard.checkIn}
                       </span>
                       {date?.from ? (
                         <span>{format(date.from, "dd/MM/yyyy")}</span>
                       ) : (
-                        <span className="text-neutral-600">Add date</span>
+                        <span className="text-neutral-600">{reserveCard.addDate}</span>
                       )}
                     </div>
                     <div className="flex flex-col px-3 py-2">
                       <span className="text-[13px] font-medium text-black">
-                        Check out
+                        {reserveCard.checkOut}
                       </span>
                       {date?.to ? (
                         <span>{format(date.to, "dd/MM/yyyy")}</span>
                       ) : (
-                        <span className="text-neutral-600">Add date</span>
+                        <span className="text-neutral-600">{reserveCard.addDate}</span>
                       )}
                     </div>
                   </div>
@@ -149,13 +153,13 @@ export function ReserveCard({ car }: ReserveCardProps) {
             disabled={date?.from === undefined || date?.to === undefined}
             onClick={handleClick}
           >
-            Reserve
+            {reserveCard.reserve}
           </Button>
         </div>
         {date?.from !== undefined && date?.to !== undefined && (
           <div className="pt-4">
             <p className="text-center text-sm text-neutral-600">
-              You won&apos;t be charged yet
+              {reserveCard.notChargedYet}
             </p>
           </div>
         )}

@@ -17,10 +17,14 @@ import {
 import { MenuIcon } from "./icons/menu"
 import { UserCircleIcon } from "./icons/user-circle"
 import { Button } from "./ui/button"
+import { useLocale } from "@/hooks/use-locale"
+import { getTranslations } from "@/lib/i18n"
 
 export function UserMenuButton() {
   const { isSignedIn, user } = useUser()
   const githubUrl = siteConfig.links.github
+  const { locale } = useLocale()
+  const { userMenu } = getTranslations(locale)
 
   // Check if user is admin
   const adminEmails = process.env.NEXT_PUBLIC_ADMIN_EMAILS?.split(',') || []
@@ -57,7 +61,7 @@ export function UserMenuButton() {
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">
-                  {user?.fullName || "Account"}
+                  {user?.fullName || userMenu.account}
                 </p>
                 <p className="text-muted-foreground text-xs leading-none">
                   {user?.emailAddresses[0]?.emailAddress}
@@ -67,30 +71,30 @@ export function UserMenuButton() {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <a href="/dashboard" className="w-full">Dashboard</a>
+                <a href="/dashboard" className="w-full">{userMenu.dashboard}</a>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <a href="/bookings" className="w-full">My Bookings</a>
+                <a href="/bookings" className="w-full">{userMenu.myBookings}</a>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <a href="/profile" className="w-full">Profile Settings</a>
+                <a href="/profile" className="w-full">{userMenu.profileSettings}</a>
               </DropdownMenuItem>
               {isAdmin && (
                 <DropdownMenuItem>
-                  <a href="/admin" className="w-full font-semibold text-orange-600">Admin Dashboard</a>
+                  <a href="/admin" className="w-full font-semibold text-orange-600">{userMenu.adminDashboard}</a>
                 </DropdownMenuItem>
               )}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <a href="#" className="w-full">Help Center</a>
+                <a href="#" className="w-full">{userMenu.helpCenter}</a>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <SignOutButton>
-                <button className="w-full text-left">Sign out</button>
+                <button className="w-full text-left">{userMenu.signOut}</button>
               </SignOutButton>
             </DropdownMenuItem>
           </>
@@ -98,16 +102,16 @@ export function UserMenuButton() {
           <>
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <a href="/sign-up" className="w-full">Sign up</a>
+                <a href="/sign-up" className="w-full">{userMenu.signUp}</a>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <a href="/sign-in" className="w-full">Log in</a>
+                <a href="/sign-in" className="w-full">{userMenu.logIn}</a>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <a href="#" className="w-full">Gift Cards</a>
+                <a href="#" className="w-full">{userMenu.giftCards}</a>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <a
@@ -116,7 +120,7 @@ export function UserMenuButton() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Help Center
+                  {userMenu.helpCenter}
                 </a>
               </DropdownMenuItem>
             </DropdownMenuGroup>

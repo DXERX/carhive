@@ -28,7 +28,24 @@ import { SelectorIcon } from "@/components/icons/selector"
 
 import { cn, constructUrlWithParams } from "../lib/utils"
 
-export function SearchPanel({ locations }: { locations: SelectLocation[] }) {
+type SearchPanelLabels = {
+  pickupDropoff: string
+  selectLocation: string
+  searchLocation: string
+  noLocationFound: string
+  checkIn: string
+  checkOut: string
+  pickDate: string
+  search: string
+}
+
+export function SearchPanel({
+  locations,
+  labels,
+}: {
+  locations: SelectLocation[]
+  labels: SearchPanelLabels
+}) {
   const { push } = useRouter()
   const searchParams = useSearchParams()
 
@@ -122,7 +139,7 @@ export function SearchPanel({ locations }: { locations: SelectLocation[] }) {
                       <div className="flex size-full items-center justify-between">
                         <div className="flex size-full flex-col items-start justify-center truncate">
                           <div className="text-[13px] font-bold">
-                            Pick-up / Drop-off
+                            {labels.pickupDropoff}
                           </div>
                           {location ? (
                             <p className="truncate font-semibold text-neutral-800">
@@ -133,7 +150,7 @@ export function SearchPanel({ locations }: { locations: SelectLocation[] }) {
                             </p>
                           ) : (
                             <div className="text-neutral-500">
-                              Select location
+                              {labels.selectLocation}
                             </div>
                           )}
                         </div>
@@ -143,9 +160,9 @@ export function SearchPanel({ locations }: { locations: SelectLocation[] }) {
                   </PopoverTrigger>
                   <PopoverContent className="p-0">
                     <Command>
-                      <CommandInput placeholder="Search location..." />
+                      <CommandInput placeholder={labels.searchLocation} />
                       <CommandList>
-                        <CommandEmpty>No location found.</CommandEmpty>
+                        <CommandEmpty>{labels.noLocationFound}</CommandEmpty>
                         <CommandGroup>
                           {locations.map((loc) => (
                             <CommandItem
@@ -189,14 +206,14 @@ export function SearchPanel({ locations }: { locations: SelectLocation[] }) {
                       className="size-full flex-col overflow-hidden rounded-full border-none px-5 py-0 focus-visible:z-10"
                     >
                       <div className="flex size-full flex-col items-start justify-center truncate">
-                        <div className="text-[13px] font-bold">Check in</div>
+                        <div className="text-[13px] font-bold">{labels.checkIn}</div>
                         {checkInDate ? (
                           <div className="font-semibold text-neutral-800">
                             {format(checkInDate, "LLL dd, y")}
                           </div>
                         ) : (
                           <div className="truncate text-neutral-500">
-                            Pick a date
+                            {labels.pickDate}
                           </div>
                         )}
                       </div>
@@ -223,14 +240,14 @@ export function SearchPanel({ locations }: { locations: SelectLocation[] }) {
                       className="size-full flex-col overflow-hidden rounded-full border-none py-0 pl-5 pr-16 focus-visible:z-10"
                     >
                       <div className="flex size-full flex-col items-start justify-center truncate">
-                        <div className="text-[13px] font-bold">Check out</div>
+                        <div className="text-[13px] font-bold">{labels.checkOut}</div>
                         {checkOutDate ? (
                           <div className="font-semibold text-neutral-800">
                             {format(checkOutDate, "LLL dd, y")}
                           </div>
                         ) : (
                           <div className="truncate text-neutral-500">
-                            Pick a date
+                            {labels.pickDate}
                           </div>
                         )}
                       </div>
@@ -254,7 +271,7 @@ export function SearchPanel({ locations }: { locations: SelectLocation[] }) {
               type="submit"
               className="flex size-[calc(var(--search-panel-height)_-_1.25rem)] shrink-0 items-center justify-center rounded-full bg-black text-white"
             >
-              <span className="sr-only">Search</span>
+              <span className="sr-only">{labels.search}</span>
               <SearchIcon className="size-[calc((var(--search-panel-height)_-_1.25rem)/2.66)] shrink-0 [stroke-width:3px]" />
             </Button>
           </div>

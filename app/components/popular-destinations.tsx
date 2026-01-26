@@ -4,9 +4,14 @@ import { locationsWithImages } from "@/data/locations-with-images"
 
 import { SearchParams } from "@/lib/types"
 import { formatAmountForDisplay } from "@/lib/utils"
+import { getLocale } from "@/lib/get-locale"
+import { getTranslations } from "@/lib/i18n"
 import { Button } from "@/components/ui/button"
 
 export function PopularDestinations() {
+  const locale = getLocale()
+  const { home } = getTranslations(locale)
+
   const featuredLocations = locationsWithImages.filter(
     (location) => location.featured === true
   )
@@ -15,7 +20,7 @@ export function PopularDestinations() {
     <section>
       <div className="mx-auto w-full max-w-none px-5 sm:max-w-[90%] sm:px-0 2xl:max-w-8xl">
         <h2 className="text-balance text-[19px] font-bold sm:text-[21px] lg:text-[23px]">
-          Where to Rent Next
+          {home.popularDestinationsTitle}
         </h2>
         <div className="pt-6">
           <div className="group grid grid-cols-2 gap-x-5 gap-y-7 sm:grid-cols-3 sm:gap-x-6 sm:gap-y-8 md:grid-cols-5 [&_a:hover_~_*_img]:!opacity-100">
@@ -28,10 +33,16 @@ export function PopularDestinations() {
                   latitude,
                   longitude,
                   name,
+                  nameAr,
+                  nameTr,
                   startingPrice,
                 },
                 index
-              ) => (
+              ) => {
+                const localizedName =
+                  locale === "ar" ? nameAr ?? name : locale === "tr" ? nameTr ?? name : name
+
+                return (
                 <article
                   key={id}
                   className={`relative ${index === featuredLocations.length - 1 ? "md:hidden" : ""}`}
@@ -56,7 +67,7 @@ export function PopularDestinations() {
                   <div className="relative aspect-square">
                     <Image
                       src={imageUrl}
-                      alt={name}
+                      alt={localizedName}
                       quality={75}
                       loading="lazy"
                       fill
@@ -66,15 +77,16 @@ export function PopularDestinations() {
                   </div>
                   <div className="pt-3 sm:pt-3.5">
                     <h3 className="truncate text-[13px] font-semibold leading-[22px] text-neutral-950 sm:text-[14px] xl:text-[15px]">
-                      {name}
+                      {localizedName}
                     </h3>
                     <p className="truncate text-[13px] leading-[21px] text-neutral-600 sm:text-[14px] sm:leading-[26px]">
-                      Cars from{" "}
+                      {home.carsFromLabel}{" "}
                       {formatAmountForDisplay(startingPrice, "usd", true)}+
                     </p>
                   </div>
                 </article>
               )
+            }
             )}
           </div>
         </div>

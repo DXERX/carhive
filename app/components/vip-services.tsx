@@ -1,39 +1,23 @@
-import { Headset, ShieldCheck, Navigation, Clock } from "lucide-react"
-
-const services = [
-  {
-    icon: Navigation,
-    title: "Modern Vehicles",
-    description: "Latest model cars, clean and well-maintained for your comfort",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Airport Service",
-    description: "Quick pickup and delivery directly from Istanbul Airport",
-  },
-  {
-    icon: Navigation,
-    title: "Flexible Payment",
-    description: "No credit card required - cash payment accepted",
-  },
-  {
-    icon: Clock,
-    title: "24/7 Available",
-    description: "Book anytime, reliable service around the clock",
-  },
-]
+import { ShieldCheck, Navigation, Clock } from "lucide-react"
+import { getLocale } from "@/lib/get-locale"
+import { getTranslations } from "@/lib/i18n"
 
 export function VipServices() {
+  const locale = getLocale()
+  const { home } = getTranslations(locale)
+
+  const serviceIcons = [Navigation, ShieldCheck, Navigation, Clock]
+
   return (
     <section className="mx-auto w-full max-w-none px-5 sm:max-w-[90%] sm:px-0 2xl:max-w-8xl">
       <div className="text-center">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-          Why Choose Avis Istanbul Airport
+          {home.vipTitle}
         </h2>
       </div>
       <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        {services.map((service, idx) => {
-          const Icon = service.icon
+        {home.vipServices.map((service, idx) => {
+          const Icon = serviceIcons[idx] ?? Navigation
           return (
             <div
               key={idx}

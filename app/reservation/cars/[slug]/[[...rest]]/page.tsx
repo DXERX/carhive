@@ -3,6 +3,8 @@ import { getCarBySlug } from "@/db/queries/car-repository"
 import { differenceInDays, isValid } from "date-fns"
 
 import { SearchParams } from "@/lib/types"
+import { getLocale } from "@/lib/get-locale"
+import { getTranslations } from "@/lib/i18n"
 import { Separator } from "@/components/ui/separator"
 import { ChevronLeftIcon } from "@/components/icons/chevron-left"
 import { LogoLink } from "@/components/logoLink"
@@ -32,6 +34,14 @@ export default async function CarReservationPage({
 }: CarReservationPageProps) {
   const { checkin, checkout, location = "Istanbul Airport" } = searchParams
   const car = await getCarBySlug(params.slug)
+  const locale = getLocale()
+  const { reservation } = getTranslations(locale)
+  const localizedCarName =
+    locale === "ar"
+      ? (car as any).nameAr ?? car.name
+      : locale === "tr"
+        ? (car as any).nameTr ?? car.name
+        : car.name
 
   // Validate required fields
   if (!car) {
@@ -71,7 +81,7 @@ export default async function CarReservationPage({
                 </BackButton>
                 <div className="absolute inset-0 flex items-center justify-center self-center ">
                   <h1 className="text-center text-base font-semibold">
-                    Confirm and Reserve
+                    {reservation.confirmAndReserve}
                   </h1>
                 </div>
               </div>
@@ -103,7 +113,7 @@ export default async function CarReservationPage({
               <div className="px-5 py-3">
                 <ContactForm
                   carSlug={params.slug}
-                  carName={car.name}
+                  carName={localizedCarName}
                   pickupLocation={location || "Istanbul Airport"}
                   checkinDate={checkinDate}
                   checkoutDate={checkoutDate}
@@ -131,7 +141,7 @@ export default async function CarReservationPage({
                   <ChevronLeftIcon className="size-5 shrink-0" />
                 </BackButton>
                 <h1 className="text-balance text-3xl font-semibold">
-                  Confirm and Reserve
+                  {reservation.confirmAndReserve}
                 </h1>
               </div>
               <div className="py-12">
@@ -144,7 +154,7 @@ export default async function CarReservationPage({
                     <Separator className="my-7" />
                     <ContactForm
                       carSlug={params.slug}
-                      carName={car.name}
+                      carName={localizedCarName}
                       pickupLocation={location || "Istanbul Airport"}
                       checkinDate={checkinDate}
                       checkoutDate={checkoutDate}
