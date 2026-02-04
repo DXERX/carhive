@@ -1,5 +1,6 @@
 import { auth, currentUser } from "@clerk/nextjs/server"
 import { isAdminByEmail as isAdminByEmailDB } from "@/db/queries/admin-repository"
+import { logger } from "@/lib/logger"
 
 // Re-export for convenience in server actions
 export { isAdminByEmailDB as isAdminByEmail }
@@ -9,35 +10,50 @@ export { isAdminByEmailDB as isAdminByEmail }
  * Also supports fallback to ADMIN_EMAILS env variable for initial setup
  */
 export async function checkIsAdmin(): Promise<boolean> {
-  const { userId } = await auth()
-  const user = await currentUser()
+  try {
+    const { userId } = await auth()
+    const user = await currentUser()
 
-  if (!userId || !user) {
-    console.log("[Admin Check] No user authenticated")
+    if (!userId || !user) {
+      logger.debug("No user authenticated", "admin.checkIsAdmin")
+      return false
+    }
+
+    const userEmail = user.emailAddresses[0]?.emailAddress
+    if (!userEmail) {
+      logger.debug("User has no email addresses", "admin.checkIsAdmin")
+      return false
+    }
+
+    logger.debug(`Checking admin status for: ${userEmail}`, "admin.checkIsAdmin")
+
+    // Check database first
+    try {
+      const isAdminDB = await isAdminByEmailDB(userEmail)
+      if (isAdminDB) {
+        logger.info("User is admin from database", "admin.checkIsAdmin", { email: userEmail })
+        return true
+      }
+    } catch (dbError) {
+      logger.warn("Database admin check failed", "admin.checkIsAdmin", dbError)
+      // Continue to env check
+    }
+
+    // Fallback to env variable for initial setup
+    const adminEmails = process.env.ADMIN_EMAILS?.split(',').map(e => e.trim()) || []
+    const isAdmin = adminEmails.includes(userEmail)
+    
+    if (isAdmin) {
+      logger.info("User is admin from env", "admin.checkIsAdmin", { email: userEmail })
+    } else {
+      logger.debug("User is not admin", "admin.checkIsAdmin", { email: userEmail })
+    }
+    
+    return isAdmin
+  } catch (error) {
+    logger.error("Unexpected error checking admin status", "admin.checkIsAdmin", error)
     return false
   }
-
-  const userEmail = user.emailAddresses[0]?.emailAddress
-  if (!userEmail) {
-    console.log("[Admin Check] User has no email addresses")
-    return false
-  }
-
-  console.log("[Admin Check] Checking email:", userEmail)
-
-  // Check database first
-  const isAdminDB = await isAdminByEmailDB(userEmail)
-  if (isAdminDB) {
-    console.log("[Admin Check] ✓ User is admin (from database)")
-    return true
-  }
-
-  // Fallback to env variable for initial setup
-  const adminEmails = process.env.ADMIN_EMAILS?.split(',').map(e => e.trim()) || []
-  console.log("[Admin Check] Admin emails from env:", adminEmails)
-  const isAdmin = adminEmails.includes(userEmail)
-  console.log("[Admin Check] ✓ User is admin (from env):", isAdmin)
-  return isAdmin
 }
 
 /**

@@ -7,6 +7,11 @@ import { eq } from "drizzle-orm"
  */
 export async function isAdminByEmail(email: string): Promise<boolean> {
   try {
+    if (!db) {
+      console.warn("Database not available, cannot check admin status")
+      return false
+    }
+
     const admins = await db
       .select()
       .from(adminRolesTable)
@@ -25,6 +30,11 @@ export async function isAdminByEmail(email: string): Promise<boolean> {
  */
 export async function isAdminByUserId(userId: string): Promise<boolean> {
   try {
+    if (!db) {
+      console.warn("Database not available, cannot check admin status")
+      return false
+    }
+
     const admins = await db
       .select()
       .from(adminRolesTable)

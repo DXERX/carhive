@@ -122,3 +122,93 @@ export const adminRolesTable = pgTable("admin_roles", {
 
 export type InsertAdminRole = typeof adminRolesTable.$inferInsert
 export type SelectAdminRole = typeof adminRolesTable.$inferSelect
+// Dynamic content tables
+export const heroSectionsTable = pgTable("hero_sections", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  title: text("title").notNull(),
+  subtitle: text("subtitle").notNull(),
+  ctaText: text("cta_text").notNull().default("Book Now"),
+  ctaUrl: text("cta_url").notNull().default("/reservation"),
+  backgroundImage: text("background_image"),
+  order: integer("order").notNull().default(0),
+  active: boolean("active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+})
+
+export type InsertHeroSection = typeof heroSectionsTable.$inferInsert
+export type SelectHeroSection = typeof heroSectionsTable.$inferSelect
+
+export const featuresTable = pgTable("features", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  icon: text("icon"),
+  order: integer("order").notNull().default(0),
+  active: boolean("active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+})
+
+export type InsertFeature = typeof featuresTable.$inferInsert
+export type SelectFeature = typeof featuresTable.$inferSelect
+
+export const testimonialsTable = pgTable("testimonials", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  name: text("name").notNull(),
+  role: text("role").notNull(),
+  content: text("content").notNull(),
+  rating: smallint("rating").notNull().default(5),
+  imageUrl: text("image_url"),
+  order: integer("order").notNull().default(0),
+  active: boolean("active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+})
+
+export type InsertTestimonial = typeof testimonialsTable.$inferInsert
+export type SelectTestimonial = typeof testimonialsTable.$inferSelect
+
+export const ctaSectionsTable = pgTable("cta_sections", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  ctaText: text("cta_text").notNull().default("Get Started"),
+  ctaUrl: text("cta_url").notNull().default("/reservation"),
+  backgroundImage: text("background_image"),
+  order: integer("order").notNull().default(0),
+  active: boolean("active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+})
+
+export type InsertCtaSection = typeof ctaSectionsTable.$inferInsert
+export type SelectCtaSection = typeof ctaSectionsTable.$inferSelect
+
+export const settingsTable = pgTable("settings", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  key: text("key").notNull().unique(),
+  value: text("value").notNull(),
+  type: text("type").notNull().default("string"), // string, number, boolean, json
+  description: text("description"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+})
+
+export type InsertSetting = typeof settingsTable.$inferInsert
+export type SelectSetting = typeof settingsTable.$inferSelect

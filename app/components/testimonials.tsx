@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { testimonials } from "@/data/testimonials"
+import { testimonials as fallbackTestimonials } from "@/data/testimonials"
 
 import {
   Carousel,
@@ -11,10 +11,36 @@ import {
 import { FilledStarIcon } from "@/components/icons/filled-star"
 import { getLocale } from "@/lib/get-locale"
 import { getTranslations } from "@/lib/i18n"
+import { getActiveTestimonials } from "@/db/queries/content-repository"
+import { logger } from "@/lib/logger"
 
-export function Testimonials() {
+export async function Testimonials() {
   const locale = getLocale()
   const { home } = getTranslations(locale)
+
+  let testimonials = []
+
+  try {
+    // Try to fetch from database
+    const dbTestimonials = await getActiveTestimonials()
+    if (dbTestimonials && dbTestimonials.length > 0) {
+      logger.info(`Loaded ${dbTestimonials.length} testimonials from database`, "testimonials-component")
+      testimonials = dbTestimonials.map((t: any) => ({
+        id: t.id,
+        name: t.name,
+        comment: t.content,
+        imageUrl: t.imageUrl || "/assets/images/default-avatar.jpg",
+        rating: t.rating || 5,
+      }))
+    } else {
+      logger.info("No testimonials found in database, using fallback", "testimonials-component")
+      testimonials = fallbackTestimonials
+    }
+  } catch (error) {
+    logger.error("Failed to load testimonials from database", "testimonials-component", error)
+    // Fallback to hardcoded testimonials
+    testimonials = fallbackTestimonials
+  }
 
   return (
     <section>
@@ -28,57 +54,50 @@ export function Testimonials() {
             <Carousel>
               <CarouselContent className="m-0 space-x-4 lg:space-x-6">
                 {testimonials.map(
-                  ({ id, name, comment, commentAr, commentTr, imageUrl, rating }) => {
-                    const localizedComment =
-                      locale === "ar"
-                        ? commentAr ?? comment
-                        : locale === "tr"
-                          ? commentTr ?? comment
-                          : comment
-
-                  return (
-                    <CarouselItem
-                      key={id}
-                      className="p-0 sm:basis-1/2 md:basis-1/3 xl:basis-1/4"
-                    >
-                      <figure className="rounded-2xl bg-neutral-50 p-8">
-                        {/* Rating Section */}
-                        <div
-                          className="flex items-center"
-                          aria-label={home.ratingLabel.replace("{rating}", String(rating))}
-                        >
-                          {[...Array(rating)].map((_, index) => (
-                            <FilledStarIcon
-                              key={index}
-                              className="size-[15px] text-yellow-500"
-                            />
-                          ))}
-                        </div>
-                        <div className="pt-4">
-                          {/* Comment Section */}
-                          <blockquote className="text-balance text-[14px] leading-[23px] text-neutral-600 sm:text-[15px] sm:leading-normal md:leading-[26px] lg:text-[16px]">
-                            “{localizedComment}”
-                          </blockquote>
-                        </div>
-                        <div className="pt-8">
-                          {/* Reviewer Information */}
-                          <figcaption className="flex items-center gap-2.5">
-                            <Image
-                              src={imageUrl}
-                              alt={name}
-                              width={24}
-                              height={24}
-                              loading="lazy"
-                              className="size-6 shrink-0 rounded-full object-cover"
-                            />
-                            <p className="text-[13px] font-medium text-neutral-700 xl:text-[14px]">
-                              {name}
-                            </p>
-                          </figcaption>
-                        </div>
-                      </figure>
-                    </CarouselItem>
-                  )
+                  ({ id, name, comment, imageUrl, rating }: any) => {
+                    return (
+                      <CarouselItem
+                        key={id}
+                        className="p-0 sm:basis-1/2 md:basis-1/3 xl:basis-1/4"
+                      >
+                        <figure className="rounded-2xl bg-neutral-50 p-8">
+                          {/* Rating Section */}
+                          <div
+                            className="flex items-center"
+                            aria-label={home.ratingLabel.replace("{rating}", String(rating))}
+                          >
+                            {[...Array(rating)].map((_, index) => (
+                              <FilledStarIcon
+                                key={index}
+                                className="size-[15px] text-yellow-500"
+                              />
+                            ))}
+                          </div>
+                          <div className="pt-4">
+                            {/* Comment Section */}
+                            <blockquote className="text-balance text-[14px] leading-[23px] text-neutral-600 sm:text-[15px] sm:leading-normal md:leading-[26px] lg:text-[16px]">
+                              "{comment}"
+                            </blockquote>
+                          </div>
+                          <div className="pt-8">
+                            {/* Reviewer Information */}
+                            <figcaption className="flex items-center gap-2.5">
+                              <Image
+                                src={imageUrl}
+                                alt={name}
+                                width={24}
+                                height={24}
+                                loading="lazy"
+                                className="size-6 shrink-0 rounded-full object-cover"
+                              />
+                              <p className="text-[13px] font-medium text-neutral-700 xl:text-[14px]">
+                                {name}
+                              </p>
+                            </figcaption>
+                          </div>
+                        </figure>
+                      </CarouselItem>
+                    )
                   }
                 )}
               </CarouselContent>
