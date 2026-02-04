@@ -23,7 +23,7 @@ export const siteConfig = {
     phone: "+1 800 352 7900",
     email: "info@avis.com",
     whatsapp: "",
-    /*...*/
+  },
 }
 
 export type SiteConfig = typeof siteConfig
