@@ -29,8 +29,13 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const cars = await getCars()
-  return cars.map((car: any) => ({ slug: car.slug }))
+  try {
+    const cars = await getCars()
+    return cars.map((car: any) => ({ slug: car.slug }))
+  } catch (error) {
+    console.warn('Failed to generate static params for cars:', error)
+    return []
+  }
 }
 
 interface CarDetailsPageProps {
@@ -38,14 +43,15 @@ interface CarDetailsPageProps {
 }
 
 export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
-  const car = await getCarBySlug(params.slug)
+  try {
+    const car = await getCarBySlug(params.slug)
 
-  if (!car) {
-    notFound()
-  }
+    if (!car) {
+      notFound()
+    }
 
-  const locale = getLocale()
-  const { carDetails, cars } = getTranslations(locale)
+    const locale = getLocale()
+    const { carDetails, cars } = getTranslations(locale)
   const powertrainKey = car.powertrain.toLowerCase() as keyof typeof cars.powertrainLabels
   const transmissionKey = car.transmission.toLowerCase() as keyof typeof cars.transmissionLabels
   const localizedName =
@@ -229,4 +235,8 @@ export default async function CarDetailsPage({ params }: CarDetailsPageProps) {
       </div>
     </main>
   )
+  } catch (error) {
+    console.error('Error loading car details:', error)
+    notFound()
+  }
 }

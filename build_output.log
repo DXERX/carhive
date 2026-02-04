@@ -1,0 +1,47 @@
+
+> carhive@0.1.0 build
+> next build
+
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+  ▲ Next.js 14.2.6
+  - Environments: .env
+
+   Creating an optimized production build ...
+ ⚠ For production Image Optimization with Next.js, the optional 'sharp' package is strongly recommended. Run 'npm i sharp', and Next.js will use it automatically for Image Optimization.
+Read more: https://nextjs.org/docs/messages/sharp-missing-in-production
+ ⚠ For production Image Optimization with Next.js, the optional 'sharp' package is strongly recommended. Run 'npm i sharp', and Next.js will use it automatically for Image Optimization.
+Read more: https://nextjs.org/docs/messages/sharp-missing-in-production
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+Browserslist: caniuse-lite is outdated. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+ ✓ Compiled successfully
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+u: Tenant or user not found
+    at K (/workspaces/carhive/.next/server/chunks/6517.js:10:2302)
+    at /workspaces/carhive/.next/server/chunks/6517.js:10:3235
+    at Socket.eF (/workspaces/carhive/.next/server/chunks/6517.js:10:3240)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Readable.push (node:internal/streams/readable:390:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23) {
+  severity_local: 'FATAL',
+  severity: 'FATAL',
+  code: 'XX000'
+}
+
+> Build error occurred
+Error: Failed to collect page data for /cars/[slug]
+    at /workspaces/carhive/node_modules/.pnpm/next@14.2.6_@babel+core@7.25.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/next/dist/build/utils.js:1268:15
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {
+  type: 'Error'
+}
