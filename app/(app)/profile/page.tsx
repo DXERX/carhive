@@ -1,5 +1,6 @@
 import { auth, currentUser } from "@clerk/nextjs/server"
 import { redirect } from "next/navigation"
+import { checkIsAdmin } from "@/lib/admin"
 
 export default async function ProfilePage() {
   const { userId } = await auth()
@@ -8,6 +9,8 @@ export default async function ProfilePage() {
   if (!userId) {
     redirect("/sign-in")
   }
+
+  const isAdmin = await checkIsAdmin()
 
   return (
     <div className="mx-auto w-full max-w-none px-5 py-12 sm:max-w-[90%] sm:px-0 2xl:max-w-7xl">
@@ -67,20 +70,22 @@ export default async function ProfilePage() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-red-200 bg-red-50 p-6">
-          <h2 className="mb-2 text-xl font-semibold text-red-900">Manage Account</h2>
-          <p className="mb-4 text-sm text-red-700">
-            To update your profile information, change your password, or manage security settings, please visit your Clerk account dashboard.
-          </p>
-          <a
-            href={`https://dashboard.clerk.com`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-10 items-center justify-center rounded-md border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-100"
-          >
-            Open Clerk Dashboard
-          </a>
-        </div>
+        {isAdmin && (
+          <div className="rounded-lg border border-red-200 bg-red-50 p-6">
+            <h2 className="mb-2 text-xl font-semibold text-red-900">Manage Account</h2>
+            <p className="mb-4 text-sm text-red-700">
+              To update your profile information, change your password, or manage security settings, please visit your Clerk account dashboard.
+            </p>
+            <a
+              href={`https://dashboard.clerk.com`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 items-center justify-center rounded-md border border-red-300 bg-white px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-100"
+            >
+              Open Clerk Dashboard
+            </a>
+          </div>
+        )}
       </div>
     </div>
   )

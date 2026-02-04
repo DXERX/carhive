@@ -8,7 +8,7 @@ export function CarhiveLogo(props: React.HTMLAttributes<SVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <rect x="1" y="1" width="70" height="22" rx="3" fill="white" stroke="#E11D2E" strokeWidth="2" />
+      <rect x="1" y="1" width="70" height="22" rx="3" fill="#E11D2E" stroke="#E11D2E" strokeWidth="2" />
       <text
         x="36"
         y="16.5"
@@ -17,7 +17,7 @@ export function CarhiveLogo(props: React.HTMLAttributes<SVGElement>) {
         fontSize="14"
         fontWeight="700"
         letterSpacing="1.5"
-        fill="#E11D2E"
+        fill="white"
       >
         AVIS
       </text>
