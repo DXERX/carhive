@@ -214,6 +214,10 @@ export const translations = {
       builtBy: "Built by",
       sections: [
         {
+          title: "AVIS",
+          links: ["AVIS"],
+        },
+        {
           title: "Services",
           links: [
             "Car Rentals",

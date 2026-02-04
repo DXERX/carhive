@@ -10,6 +10,41 @@ export function SiteFooter() {
   const { footer } = getTranslations(locale)
   const githubUrl = siteConfig.links.github
 
+  // Define URLs for each footer link section
+  const sectionLinks: Record<string, string[]> = {
+    AVIS: ["https://www.avis.com"],
+    Services: [
+      "/cars",
+      "/insurance",
+      "/corporate",
+      "/special-offers",
+      "/faqs",
+    ],
+    Resources: [
+      "/help-center",
+      "/privacy-policy",
+      "/terms-of-service",
+      "/accessibility",
+      "/vehicle-guides",
+      "/testimonials",
+    ],
+    Company: [
+      "/about",
+      "/contact",
+      "/blog",
+      "/partners",
+      "/customers",
+      "/careers",
+      "/press",
+    ],
+    Social: [
+      "https://youtube.com/avis",
+      "https://twitter.com/avis",
+      "https://instagram.com/avis",
+      "https://facebook.com/avis",
+    ],
+  }
+
   return (
     <footer className="border-t border-black/[0.06] py-12">
       <div className="mx-auto w-full max-w-none px-5 text-sm sm:max-w-[90%] sm:px-0 xl:max-w-5xl">
@@ -28,14 +63,18 @@ export function SiteFooter() {
                     {section.title}
                   </h2>
                 </div>
-                {section.links.map((link) => (
+                {section.links.map((link, idx) => (
                   <li key={link} className="text-neutral-600">
                     <Button
                       variant={"link"}
                       className="h-auto text-balance rounded-none p-0 text-[13px] font-normal leading-none sm:text-sm"
                       asChild
                     >
-                      <a href={githubUrl} target="_blank" rel="noreferrer">
+                      <a
+                        href={sectionLinks[section.title]?.[idx] || "#"}
+                        target={section.title === "Social" || section.title === "AVIS" ? "_blank" : undefined}
+                        rel={section.title === "Social" || section.title === "AVIS" ? "noreferrer" : undefined}
+                      >
                         {link}
                       </a>
                     </Button>
