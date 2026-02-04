@@ -27,10 +27,14 @@ export function UserMenuButton() {
   const { userMenu } = getTranslations(locale)
 
   // Check if user is admin
-  const adminEmails = process.env.NEXT_PUBLIC_ADMIN_EMAILS?.split(',') || []
-  const isAdmin = user?.emailAddresses.some(email => 
-    adminEmails.includes(email.emailAddress)
-  )
+  const adminEmails = process.env.NEXT_PUBLIC_ADMIN_EMAILS?.split(',').map(e => e.trim()) || []
+  const userEmail = user?.emailAddresses[0]?.emailAddress || ""
+  const isAdmin = adminEmails.includes(userEmail)
+  
+  // Debug logging
+  if (userEmail) {
+    console.log("[UserMenuButton] Admin check:", { userEmail, adminEmails, isAdmin })
+  }
 
   return (
     <DropdownMenu modal={false}>
