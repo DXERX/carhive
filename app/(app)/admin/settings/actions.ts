@@ -6,11 +6,11 @@ import { isAdminByEmail } from "@/lib/admin"
 
 // Settings storage (in production, this should be in a database)
 const settings: Record<string, any> = {
-  siteName: "CarHive",
-  brandName: "CarHive",
+  siteName: "Avis",
+  brandName: "Avis",
   logoUrl: "",
-  siteUrl: "https://carhive.com",
-  supportEmail: "support@carhive.com",
+  siteUrl: "https://avis.com",
+  supportEmail: "support@avis.com",
   emailNotifications: true,
   smsNotifications: false,
   adminAlerts: true,
@@ -24,7 +24,7 @@ const settings: Record<string, any> = {
   apiRateLimiting: true,
   smtpHost: "smtp.gmail.com",
   smtpPort: 587,
-  fromEmail: "noreply@carhive.com",
+  fromEmail: "noreply@avis.com",
 }
 
 export async function updateGeneralSettings(formData: FormData) {
@@ -192,7 +192,7 @@ export async function getSettings() {
 
 export async function getBrandInfo() {
   return {
-    brandName: settings.brandName || "CarHive",
+    brandName: settings.brandName || settings.siteName || "Avis",
     logoUrl: settings.logoUrl || "",
   }
 }
@@ -208,6 +208,10 @@ export async function updateBrandingSettings(formData: FormData) {
   try {
     settings.brandName = formData.get("brandName") as string
     settings.logoUrl = formData.get("logoUrl") as string
+    // Also update siteName if changed
+    if (formData.get("brandName")) {
+      settings.siteName = formData.get("brandName") as string
+    }
 
     revalidatePath("/admin/settings")
     revalidatePath("/", "layout")

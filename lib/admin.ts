@@ -13,23 +13,31 @@ export async function checkIsAdmin(): Promise<boolean> {
   const user = await currentUser()
 
   if (!userId || !user) {
+    console.log("[Admin Check] No user authenticated")
     return false
   }
 
   const userEmail = user.emailAddresses[0]?.emailAddress
   if (!userEmail) {
+    console.log("[Admin Check] User has no email addresses")
     return false
   }
+
+  console.log("[Admin Check] Checking email:", userEmail)
 
   // Check database first
   const isAdminDB = await isAdminByEmailDB(userEmail)
   if (isAdminDB) {
+    console.log("[Admin Check] ✓ User is admin (from database)")
     return true
   }
 
   // Fallback to env variable for initial setup
-  const adminEmails = process.env.ADMIN_EMAILS?.split(',') || []
-  return adminEmails.includes(userEmail)
+  const adminEmails = process.env.ADMIN_EMAILS?.split(',').map(e => e.trim()) || []
+  console.log("[Admin Check] Admin emails from env:", adminEmails)
+  const isAdmin = adminEmails.includes(userEmail)
+  console.log("[Admin Check] ✓ User is admin (from env):", isAdmin)
+  return isAdmin
 }
 
 /**
